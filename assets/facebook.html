@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+            let player
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId            : '',
+                    autoLogAppEvents : true,
+                    xfbml            : true,
+                    version          : 'v16.0'
+                });
+
+                // 播放器初始化完成
+                FB.Event.subscribe('xfbml.ready', (msg) => {
+                    console.log('facebook 打印 准备好', msg.type)
+                    // 获取视频数据
+                    if (msg.type === 'video') {
+                        player = msg.instance
+
+                        // 播放
+                        player.subscribe('startedPlaying',function(e) {
+                            Tw591StateChange.postMessage('startedPlaying');
+                        });
+
+                        // 暂停播放
+                        player.subscribe('paused',function(e) {
+                            Tw591StateChange.postMessage('paused');
+                        });
+
+                        // 播放结束
+                        player.subscribe('finishedPlaying',function(e) {
+                            Tw591StateChange.postMessage('finishedPlaying');
+
+                            player.play();
+                        });
+
+                        player.subscribe('startedBuffering',function(e) {
+                            console.log('facebook 打印','开始缓存')
+                        });
+
+                        player.subscribe('finishedBuffering',function(e) {
+                            console.log('facebook 打印','结束缓存')
+                        });
+
+                        player.subscribe('error',function(e) {
+                            console.log('facebook 打印','发送错误')
+                        });
+
+                        setInterval(() => {
+                           Tw591TimeInterval.postMessage(player.getCurrentPosition());
+                        }, 500)
+                    }
+                })
+            };
+
+
+             // 获取当前播放时间
+            function getCurrentTime(){
+                return player.getCurrentPosition();
+            }
+
+            // 获取视频总时间
+            function getTotalTime(){
+                return player.getDuration();
+            }
+
+            // 设置播放
+            function play() {
+                player.play();
+            }
+
+            // 设置暂停
+            function pause() {
+                player.pause();
+            }
+
+
+            // 是否为静音
+            function isMuted(){
+              if(player.isMuted()){
+                return '1';
+              }
+              return '0';
+            }
+
+            // 设置静音
+            function mute() {
+                player.mute();
+            }
+
+            // 设置非静音
+            function unMute() {
+                player.unmute();
+            }
+
+            // 设置音量(0-1)
+            function setVolume(volume) {
+                player.setVolume(volume);
+            }
+
+
+
+</script>
+<script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/en_US/sdk.js"></script>
+<div class="fb-video"
+     data-href="{initUrl}"
+     data-autoplay="true"
+     data-lazy="false"
+     data-allowfullscreen="false">
+</div>
+</body>
+</html>
