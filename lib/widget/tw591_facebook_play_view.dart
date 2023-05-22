@@ -11,16 +11,16 @@ class Tw591FacebookPlayView extends StatefulWidget {
   final bool mute;
   final bool loop;
   final bool autoPlay;
-  final Tw591PlayController? playController;
+  final Tw591PlayController playController;
 
-  const Tw591FacebookPlayView(
-      {Key? key,
-      required this.initUrl,
-      this.mute = true,
-      this.loop = true,
-      this.autoPlay = false,
-      this.playController})
-      : super(key: key);
+  const Tw591FacebookPlayView({
+    Key? key,
+    required this.initUrl,
+    this.mute = true,
+    this.loop = true,
+    this.autoPlay = false,
+    required this.playController,
+  }) : super(key: key);
 
   @override
   State<Tw591FacebookPlayView> createState() => _Tw591FacebookPlayViewState();
@@ -53,7 +53,7 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
         zoomEnabled: false,
         gestureNavigationEnabled: true,
         onWebViewCreated: (controller) async {
-          widget.playController?.setWebViewController(controller);
+          widget.playController.setWebViewController(controller);
           String currentHtml = await getPlayHtml();
           controller.loadHtmlString(currentHtml);
         },
@@ -64,13 +64,13 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
               String status = message.message;
               if (status == 'startedPlaying') {
                 // 开始播放
-                widget.playController?.updatePlayStatus(VideoPlayStatus.play);
+                widget.playController.updatePlayStatus(VideoPlayStatus.play);
               } else if (status == 'paused') {
                 // 暂停
-                widget.playController?.updatePlayStatus(VideoPlayStatus.pause);
+                widget.playController.updatePlayStatus(VideoPlayStatus.pause);
               } else if (status == 'finishedPlaying') {
                 // 结束
-                widget.playController?.updatePlayStatus(VideoPlayStatus.finish);
+                widget.playController.updatePlayStatus(VideoPlayStatus.finish);
               }
             },
           ),
@@ -80,7 +80,7 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
               // 当前时间
               String result = message.message;
               double currentTime = double.tryParse(result) ?? 0.0;
-              widget.playController?.updateTimeInterval(currentTime);
+              widget.playController.updateTimeInterval(currentTime);
             },
           ),
         },

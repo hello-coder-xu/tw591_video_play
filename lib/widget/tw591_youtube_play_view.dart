@@ -11,15 +11,15 @@ class Tw591YoutubePlayView extends StatefulWidget {
   final bool mute;
   final bool loop;
   final bool autoPlay;
-  final Tw591PlayController? playController;
+  final Tw591PlayController playController;
 
   const Tw591YoutubePlayView({
     Key? key,
     required this.initUrl,
+    required this.playController,
     this.mute = true,
     this.loop = true,
     this.autoPlay = false,
-    this.playController,
   }) : super(key: key);
 
   @override
@@ -66,7 +66,7 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
         zoomEnabled: false,
         gestureNavigationEnabled: true,
         onWebViewCreated: (controller) async {
-          widget.playController?.setWebViewController(controller);
+          widget.playController.setWebViewController(controller);
           String currentHtml = await getPlayHtml();
           controller.loadHtmlString(currentHtml);
         },
@@ -83,13 +83,13 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
               // 5 已插入视频
               if (status == '1') {
                 // 开始播放
-                widget.playController?.updatePlayStatus(VideoPlayStatus.play);
+                widget.playController.updatePlayStatus(VideoPlayStatus.play);
               } else if (status == '2') {
                 // 暂停
-                widget.playController?.updatePlayStatus(VideoPlayStatus.pause);
+                widget.playController.updatePlayStatus(VideoPlayStatus.pause);
               } else if (status == '0') {
                 // 结束
-                widget.playController?.updatePlayStatus(VideoPlayStatus.finish);
+                widget.playController.updatePlayStatus(VideoPlayStatus.finish);
               }
             },
           ),
@@ -105,7 +105,7 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
               // 当前时间
               String result = message.message;
               double currentTime = double.tryParse(result) ?? 0.0;
-              widget.playController?.updateTimeInterval(currentTime);
+              widget.playController.updateTimeInterval(currentTime);
             },
           ),
         },

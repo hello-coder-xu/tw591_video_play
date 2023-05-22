@@ -26,7 +26,10 @@ class Tw591PlayController extends ChangeNotifier {
   VideoPlayStatus? videoPlayStatus;
 
   /// 视频播放时间
-  double playTime = 0;
+  double currentTime = 0;
+
+  /// 视频总时长
+  double totalTime = 0;
 
   /// 设置webView 控制器
   void setWebViewController(WebViewController controller) {
@@ -151,13 +154,31 @@ class Tw591PlayController extends ChangeNotifier {
   void updatePlayStatus(VideoPlayStatus status) {
     videoPlayStatus = status;
     _updateStatus?.call(status);
+    if (status == VideoPlayStatus.play) {
+      getTotalTime().then((value) => totalTime = value);
+    }
     notifyListeners();
   }
 
   /// 更新当前播放时长
   void updateTimeInterval(double current) {
-    playTime=current;
+    currentTime = current;
     _timeInterval?.call(current);
     notifyListeners();
+  }
+
+  /// 重置
+  void reset() {
+    totalTime = 0;
+    currentTime = 0;
+    videoPlayStatus = null;
+    videoType = null;
+  }
+
+  @override
+  void dispose() {
+    _otherPlayerController?.dispose();
+    reset();
+    super.dispose();
   }
 }

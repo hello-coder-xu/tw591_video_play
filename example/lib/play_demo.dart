@@ -19,7 +19,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
   double get maxWidth => MediaQuery.of(context).size.width;
 
   /// 播放类型
-  int selectType = 1;
+  int selectType = 0;
 
   /// 类型数据
   List<String> playTypeList = ['youtube', 'facebook', '其他'];
@@ -30,12 +30,6 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
   /// 当前是否静音
   bool mute = false;
 
-  /// 总时间
-  double totalTime = 0;
-
-  /// 当前时间
-  double currentTime = 0;
-
   @override
   void initState() {
     super.initState();
@@ -44,7 +38,6 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
       switch (status) {
         case VideoPlayStatus.play:
           debugPrint('test 测试 当前状态 ： 播放');
-          controller.getTotalTime().then((value) => totalTime = value);
           break;
         case VideoPlayStatus.pause:
           debugPrint('test 测试 当前状态 ： 暂停');
@@ -53,10 +46,6 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
           debugPrint('test 测试 当前状态 ： 结束');
           break;
       }
-    });
-    controller.addIntervalListener((current) {
-      currentTime = current;
-      setState(() {});
     });
   }
 
@@ -73,7 +62,6 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
           playTypeView(),
           controlBtnView(),
           soundView(),
-          resultView(),
         ],
       ),
     );
@@ -87,7 +75,8 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
     } else if (selectType == 1) {
       initUrl = 'https://fb.watch/kD5Ij9HS2T/';
     } else {
-      initUrl = 'https://video.591.com.tw/online/target/hls/union/2023/05/08/pc/1683516699736-859624-476554.m3u8';
+      initUrl =
+          'https://video.591.com.tw/online/target/hls/union/2023/05/08/pc/1683516699736-859624-476554.m3u8';
     }
     return SizedBox(
       width: 411,
@@ -97,7 +86,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
         initUrl: initUrl,
         mute: mute,
         loop: true,
-        autoPlay: true,
+        autoPlay: false,
       ),
     );
   }
@@ -207,24 +196,5 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
       );
     }
     return result;
-  }
-
-  /// 结果视图
-  Widget resultView() {
-    return Container(
-      margin: const EdgeInsets.only(top: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      alignment: Alignment.centerLeft,
-      child: Text.rich(
-        TextSpan(
-          children: [
-            TextSpan(text: '总时间 : $totalTime'),
-            TextSpan(text: '\n当前时间 : $currentTime'),
-            TextSpan(text: '\n静音状态 : ${mute ? '静音' : '非静音'}'),
-          ],
-        ),
-        textAlign: TextAlign.start,
-      ),
-    );
   }
 }

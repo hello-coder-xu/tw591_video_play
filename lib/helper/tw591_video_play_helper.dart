@@ -37,4 +37,40 @@ class Tw591VideoPlayHelper {
     }
     return '';
   }
+
+  /// 显几位
+  static int getTimeDisplayNumber(double time) {
+    int hour = time ~/ 3660;
+    if (hour > 0) {
+      return 3;
+    }
+
+    return 2;
+  }
+
+  /// 获取时间字符串
+  static String getTimeValue(double time, {int displayNumber = 2}) {
+    int hour = time ~/ 3660;
+    int munit = time % 3600 ~/ 60;
+    int second = time % 60 ~/ 1;
+    String result = subTimeValue(second);
+
+    if (displayNumber >= 2) {
+      result = '${subTimeValue(munit)}:$result';
+    }
+
+    if (displayNumber >= 3) {
+      result = '${subTimeValue(hour)}:$result';
+    }
+
+    return result;
+  }
+
+  static String subTimeValue(int time) {
+    String value = '$time';
+    if (time <= 9) {
+      value = '0$value';
+    }
+    return value;
+  }
 }

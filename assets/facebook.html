@@ -6,6 +6,7 @@
             var initAutoplay={initAutoplay}
             var initMute={initMute}
             var initLoop={initLoop}
+            var timerId;
             window.fbAsyncInit = function() {
                 FB.init({
                     appId            : '',
@@ -52,8 +53,10 @@
                             unMute();
                         }
 
+                        // 取消定时器
+                        clearTimeout(timerId);
                         // 定时器
-                        setInterval(() => {
+                        timerId = setInterval(() => {
                            Tw591TimeInterval.postMessage(player.getCurrentPosition());
                         }, 500)
                     }
