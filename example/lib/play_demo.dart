@@ -39,6 +39,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
   @override
   void initState() {
     super.initState();
+
     controller.addStatusListener((status) {
       switch (status) {
         case VideoPlayStatus.play:

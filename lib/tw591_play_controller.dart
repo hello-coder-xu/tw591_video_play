@@ -1,4 +1,5 @@
 import 'package:chewie/chewie.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -6,20 +7,26 @@ typedef PlayStatusChange = Function(VideoPlayStatus status);
 
 typedef PlayTimeInterval = Function(double current);
 
-class Tw591PlayController {
+class Tw591PlayController extends ChangeNotifier {
   WebViewController? _controller;
 
   /// other类型的播放控制器
   ChewieController? _otherPlayerController;
 
   // 状态变化
-  PlayStatusChange? updateStatus;
+  PlayStatusChange? _updateStatus;
 
   // 定时器(当前播放时间)
-  PlayTimeInterval? timeInterval;
+  PlayTimeInterval? _timeInterval;
 
   /// 视频类型
   VideoPlayType? videoType;
+
+  /// 视频播放状态
+  VideoPlayStatus? videoPlayStatus;
+
+  /// 视频播放时间
+  double playTime = 0;
 
   /// 设置webView 控制器
   void setWebViewController(WebViewController controller) {
@@ -38,12 +45,12 @@ class Tw591PlayController {
 
   /// 状态监听
   void addStatusListener(PlayStatusChange updateStatus) {
-    this.updateStatus = updateStatus;
+    _updateStatus = updateStatus;
   }
 
   /// 定时监听
   void addIntervalListener(PlayTimeInterval timeInterval) {
-    this.timeInterval = timeInterval;
+    _timeInterval = timeInterval;
   }
 
   /// 是否由网页播放
@@ -57,6 +64,7 @@ class Tw591PlayController {
     } else {
       _otherPlayerController?.play();
     }
+    notifyListeners();
   }
 
   ///  暂停
@@ -66,8 +74,8 @@ class Tw591PlayController {
     } else {
       _otherPlayerController?.pause();
     }
+    notifyListeners();
   }
-
 
   /// 当前是否静音
   Future<bool> isMute() async {
@@ -110,13 +118,6 @@ class Tw591PlayController {
     }
   }
 
-  /// 跳过
-  void seekTo(Duration position) {
-    if (_playByWebView) {
-      _controller?.runJavascript('seekTo()');
-    }
-  }
-
   /// 获取当前播放时间
   Future<double> getCurrentTime() async {
     if (_playByWebView) {
@@ -143,5 +144,19 @@ class Tw591PlayController {
                 ?.videoPlayerController.value.duration.inSeconds ??
             0)
         .toDouble();
+  }
+
+  /// 更新播放状态
+  void updatePlayStatus(VideoPlayStatus status) {
+    videoPlayStatus = status;
+    _updateStatus?.call(status);
+    notifyListeners();
+  }
+
+  /// 更新当前播放时长
+  void updateTimeInterval(double current) {
+    playTime=current;
+    _timeInterval?.call(current);
+    notifyListeners();
   }
 }

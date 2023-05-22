@@ -82,8 +82,7 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
 
   handlePlayerListener() {
     // 播放时间
-    widget.playController?.timeInterval
-        ?.call(videoPlayerController.value.position.inSeconds.toDouble());
+    widget.playController?.updateTimeInterval(videoPlayerController.value.position.inSeconds.toDouble());
 
     // 播放状态
     if (videoPlayerController.value.isPlaying) {
@@ -91,7 +90,7 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
       const currentStatus = VideoPlayStatus.play;
       if (playStatus != currentStatus) {
         playStatus = currentStatus;
-        widget.playController?.updateStatus?.call(currentStatus);
+        widget.playController?.updatePlayStatus(currentStatus);
       }
     } else {
       // 没有在播放
@@ -101,7 +100,7 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
           isFinished ? VideoPlayStatus.finish : VideoPlayStatus.pause;
       if (playStatus != currentStatus) {
         playStatus = currentStatus;
-        widget.playController?.updateStatus?.call(currentStatus);
+        widget.playController?.updatePlayStatus(currentStatus);
       }
     }
   }

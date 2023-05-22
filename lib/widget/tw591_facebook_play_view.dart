@@ -35,7 +35,8 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
     );
     playerHtml = playerHtml.replaceAll('{initUrl}', widget.initUrl);
     playerHtml = playerHtml.replaceAll('{autoplay}', '${widget.autoPlay}');
-    playerHtml = playerHtml.replaceAll('{mute}', '${widget.mute}');
+    playerHtml = playerHtml.replaceAll('{initAutoplay}', '${widget.autoPlay}');
+    playerHtml = playerHtml.replaceAll('{initMute}', '${widget.mute}');
     return playerHtml;
   }
 
@@ -63,15 +64,13 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
               String status = message.message;
               if (status == 'startedPlaying') {
                 // 开始播放
-                widget.playController?.updateStatus?.call(VideoPlayStatus.play);
+                widget.playController?.updatePlayStatus(VideoPlayStatus.play);
               } else if (status == 'paused') {
                 // 暂停
-                widget.playController?.updateStatus
-                    ?.call(VideoPlayStatus.pause);
+                widget.playController?.updatePlayStatus(VideoPlayStatus.pause);
               } else if (status == 'finishedPlaying') {
                 // 结束
-                widget.playController?.updateStatus
-                    ?.call(VideoPlayStatus.finish);
+                widget.playController?.updatePlayStatus(VideoPlayStatus.finish);
               }
             },
           ),
@@ -81,7 +80,7 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
               // 当前时间
               String result = message.message;
               double currentTime = double.tryParse(result) ?? 0.0;
-              widget.playController?.timeInterval?.call(currentTime);
+              widget.playController?.updateTimeInterval(currentTime);
             },
           ),
         },

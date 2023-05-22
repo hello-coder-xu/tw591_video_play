@@ -83,15 +83,13 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
               // 5 已插入视频
               if (status == '1') {
                 // 开始播放
-                widget.playController?.updateStatus?.call(VideoPlayStatus.play);
+                widget.playController?.updatePlayStatus(VideoPlayStatus.play);
               } else if (status == '2') {
                 // 暂停
-                widget.playController?.updateStatus
-                    ?.call(VideoPlayStatus.pause);
+                widget.playController?.updatePlayStatus(VideoPlayStatus.pause);
               } else if (status == '0') {
                 // 结束
-                widget.playController?.updateStatus
-                    ?.call(VideoPlayStatus.finish);
+                widget.playController?.updatePlayStatus(VideoPlayStatus.finish);
               }
             },
           ),
@@ -107,7 +105,7 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
               // 当前时间
               String result = message.message;
               double currentTime = double.tryParse(result) ?? 0.0;
-              widget.playController?.timeInterval?.call(currentTime);
+              widget.playController?.updateTimeInterval(currentTime);
             },
           ),
         },
