@@ -109,12 +109,13 @@ class Tw591PlayController extends ChangeNotifier {
 
   /// 设置音量 [0-100]
   void setVolume(double volume) {
+    double vol = volume.clamp(0, 100).toDouble();
     if (videoType == VideoPlayType.youtube) {
-      _controller?.runJavascript('setVolume(${volume ~/ 1})');
+      _controller?.runJavascript('setVolume(${vol ~/ 1})');
     } else if (videoType == VideoPlayType.facebook) {
-      _controller?.runJavascript('setVolume(${volume / 100})');
+      _controller?.runJavascript('setVolume(${vol / 100})');
     } else {
-      _otherPlayerController?.setVolume((volume ~/ 1).toDouble());
+      _otherPlayerController?.setVolume(vol / 100);
     }
   }
 
