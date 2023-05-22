@@ -65,7 +65,7 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
       videoPlayerController: videoPlayerController,
       autoPlay: widget.autoPlay,
       allowMuting: true,
-      looping: false,
+      looping: widget.loop,
       showControls: false, // 不显示控制面板
     );
     this.chewieController = chewieController;

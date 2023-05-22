@@ -28,7 +28,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
   double sound = 1.0;
 
   /// 当前是否静音
-  bool mute = true;
+  bool mute = false;
 
   /// 总时间
   double totalTime = 0;
@@ -86,7 +86,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
     } else if (selectType == 1) {
       initUrl = 'https://fb.watch/kD5Ij9HS2T/';
     } else {
-      initUrl = 'https://livedoc.cgtn.com/500d/prog_index.m3u8';
+      initUrl = 'https://video.591.com.tw/online/target/hls/union/2023/05/08/pc/1683516699736-859624-476554.m3u8';
     }
     return SizedBox(
       width: 411,
