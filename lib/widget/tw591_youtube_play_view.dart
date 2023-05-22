@@ -34,22 +34,10 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
       'packages/tw591_video_play/assets/youtube.html',
     );
     String videoId = Tw591VideoPlayHelper.convertUrlToId(widget.initUrl);
-    playerHtml = playerHtml.replaceAll(
-      '{videoId}',
-      videoId,
-    );
-    playerHtml = playerHtml.replaceAll(
-      '{initMute}',
-      widget.mute ? '1' : '0',
-    );
-    playerHtml = playerHtml.replaceAll(
-      '{autoplay}',
-      widget.autoPlay ? '1' : '0',
-    );
-    playerHtml = playerHtml.replaceAll(
-      '{loop}',
-      widget.loop ? '1' : '0',
-    );
+    playerHtml = playerHtml.replaceAll('{videoId}', videoId);
+    playerHtml = playerHtml.replaceAll('{initAutoplay}', '${widget.autoPlay}');
+    playerHtml = playerHtml.replaceAll('{initMute}', '${widget.mute}');
+    playerHtml = playerHtml.replaceAll('{initLoop}', '${widget.loop}');
     return playerHtml;
   }
 

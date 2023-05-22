@@ -7,6 +7,8 @@ import 'package:tw591_video_play/widget/tw591_facebook_play_view.dart';
 import 'package:tw591_video_play/widget/tw591_other_play_view.dart';
 import 'package:tw591_video_play/widget/tw591_youtube_play_view.dart';
 
+typedef CustomView = Widget Function(VideoPlayStatus? videoPlayStatus);
+
 /// 播放器
 class Tw591VideoPlayView extends StatefulWidget {
   final String initUrl;
@@ -15,6 +17,7 @@ class Tw591VideoPlayView extends StatefulWidget {
   final bool loop;
   final bool autoPlay;
   final bool displayUi;
+  final CustomView? customView;
 
   const Tw591VideoPlayView({
     Key? key,
@@ -24,6 +27,7 @@ class Tw591VideoPlayView extends StatefulWidget {
     this.loop = true,
     this.autoPlay = true,
     this.displayUi = false,
+    this.customView,
   }) : super(key: key);
 
   @override
@@ -72,6 +76,9 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
     result = Stack(
       children: [
         result,
+        // 自定义视图
+        widget.customView?.call(controller.videoPlayStatus) ??
+            const SizedBox.shrink(),
         if (widget.displayUi) Tw591ControllerUiView(controller: controller),
       ],
     );

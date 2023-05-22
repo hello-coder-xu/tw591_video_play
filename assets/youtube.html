@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
     <style>
             html,
             body {
@@ -14,6 +13,7 @@
                 width: 100%;
                 pointer-events: none;
             }
+
 
     </style>
     <meta name='viewport'
@@ -28,7 +28,9 @@
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
             var player;
             var timerId;
-            var initMute={initMute};
+            var initAutoplay={initAutoplay}
+            var initMute={initMute}
+            var initLoop={initLoop}
             // 初始化播放器
             function onYouTubeIframeAPIReady() {
                 player = new YT.Player('player', {
@@ -44,13 +46,15 @@
                         'showinfo': 0,
                         'iv_load_policy': 3,
                         'modestbranding': 1,
-                        'cc_lang_pref': 'en',
-                        'autoplay': {autoplay},
-                        'loop': {loop},
+                        'cc_lang_pref': 'en'
                     },
                     events: {
                         onReady: function(event) {
                           console.log('youtube 打印','准备好 initMute='+initMute);
+                          if(initAutoplay){
+                            play();
+                          }
+
                           if(initMute==1){
                             mute();
                           }else{
@@ -77,6 +81,10 @@
             function sendPlayerStateChange(playerState) {
                  // 向原生发送播放状态
                  Tw591StateChange.postMessage(playerState);
+
+                 if(playerState==0&&initLoop){
+                    play();
+                 }
 
                  // 取消定时器
                  clearTimeout(timerId);
@@ -181,6 +189,7 @@
             function cuePlaylist(playlist, index, startAt) {
                 player.cuePlaylist(playlist, 'playlist', index, startAt);
             }
+
 
 
 
