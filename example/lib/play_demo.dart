@@ -82,7 +82,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
   Widget playView() {
     String initUrl = '';
     if (selectType == 0) {
-      initUrl = 'https://www.youtube.com/watch?v=FrriWkcyQbI';
+      initUrl = 'https://www.youtube.com/watch?v=pmT_DvNzCQI';
     } else if (selectType == 1) {
       initUrl = 'https://fb.watch/kD5Ij9HS2T/';
     } else {
@@ -90,12 +90,13 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
     }
     return SizedBox(
       width: 411,
-      height: 300,
+      height: 240,
       child: Tw591VideoPlayView(
         playController: controller,
         initUrl: initUrl,
         mute: mute,
         loop: true,
+        autoPlay: true,
       ),
     );
   }

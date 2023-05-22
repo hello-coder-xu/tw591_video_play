@@ -33,6 +33,7 @@ class Tw591VideoPlayView extends StatelessWidget {
           initUrl: initUrl,
           mute: mute,
           loop: loop,
+          autoPlay: autoPlay,
           playController: playController,
         );
       case VideoPlayType.facebook:
@@ -40,6 +41,7 @@ class Tw591VideoPlayView extends StatelessWidget {
           initUrl: initUrl,
           mute: mute,
           loop: loop,
+          autoPlay: autoPlay,
           playController: playController,
         );
       case VideoPlayType.other:

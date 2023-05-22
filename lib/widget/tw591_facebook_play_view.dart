@@ -34,13 +34,14 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
       'packages/tw591_video_play/assets/facebook.html',
     );
     playerHtml = playerHtml.replaceAll('{initUrl}', widget.initUrl);
+    playerHtml = playerHtml.replaceAll('{autoplay}', '${widget.autoPlay}');
     return playerHtml;
   }
 
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
-      ignoring: false,
+      ignoring: true,
       child: WebView(
         javascriptMode: JavascriptMode.unrestricted,
         allowsInlineMediaPlayback: true,
