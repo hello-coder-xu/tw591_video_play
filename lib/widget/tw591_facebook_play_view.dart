@@ -35,6 +35,7 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
     );
     playerHtml = playerHtml.replaceAll('{initUrl}', widget.initUrl);
     playerHtml = playerHtml.replaceAll('{autoplay}', '${widget.autoPlay}');
+    playerHtml = playerHtml.replaceAll('{mute}', '${widget.mute}');
     return playerHtml;
   }
 
