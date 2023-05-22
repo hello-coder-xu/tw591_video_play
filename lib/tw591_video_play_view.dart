@@ -3,6 +3,7 @@ import 'package:tw591_video_play/helper/tw591_video_play_helper.dart';
 import 'package:tw591_video_play/tw591_play_controller.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
 import 'package:tw591_video_play/widget/tw591_facebook_play_view.dart';
+import 'package:tw591_video_play/widget/tw591_other_play_view.dart';
 import 'package:tw591_video_play/widget/tw591_youtube_play_view.dart';
 
 /// 播放器
@@ -45,8 +46,12 @@ class Tw591VideoPlayView extends StatelessWidget {
           playController: playController,
         );
       case VideoPlayType.other:
-        break;
+        return Tw591OtherPlayView(
+          initUrl: initUrl,
+          mute: mute,
+          loop: loop,
+          playController: playController,
+        );
     }
-    return const SizedBox.shrink();
   }
 }

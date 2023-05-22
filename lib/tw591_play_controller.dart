@@ -1,3 +1,4 @@
+import 'package:chewie/chewie.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -7,6 +8,9 @@ typedef PlayTimeInterval = Function(double current);
 
 class Tw591PlayController {
   WebViewController? _controller;
+
+  /// other类型的播放控制器
+  ChewieController? _otherPlayerController;
 
   // 状态变化
   PlayStatusChange? updateStatus;
@@ -20,6 +24,11 @@ class Tw591PlayController {
   /// 设置webView 控制器
   void setWebViewController(WebViewController controller) {
     _controller = controller;
+  }
+
+  /// 设置
+  void setOtherPlayerController(ChewieController controller) {
+    _otherPlayerController = controller;
   }
 
   /// 视频类型
@@ -45,6 +54,8 @@ class Tw591PlayController {
   void play() {
     if (_playByWebView) {
       _controller?.runJavascript('play()');
+    } else {
+      _otherPlayerController?.play();
     }
   }
 
@@ -52,6 +63,8 @@ class Tw591PlayController {
   void pause() {
     if (_playByWebView) {
       _controller?.runJavascript('pause()');
+    } else {
+      _otherPlayerController?.pause();
     }
   }
 
@@ -69,13 +82,17 @@ class Tw591PlayController {
           await _controller?.runJavascriptReturningResult('isMuted()');
       return result == '1';
     }
-    return false;
+
+    return 0 ==
+        (_otherPlayerController?.videoPlayerController.value.volume ?? 0);
   }
 
   /// 静音
   void mute() {
     if (_playByWebView) {
       _controller?.runJavascript('mute()');
+    } else {
+      _otherPlayerController?.setVolume(0);
     }
   }
 
@@ -83,6 +100,8 @@ class Tw591PlayController {
   void unMute() {
     if (_playByWebView) {
       _controller?.runJavascript('unMute()');
+    } else {
+      _otherPlayerController?.setVolume(1);
     }
   }
 
@@ -92,6 +111,8 @@ class Tw591PlayController {
       _controller?.runJavascript('setVolume(${volume ~/ 1})');
     } else if (videoType == VideoPlayType.facebook) {
       _controller?.runJavascript('setVolume(${volume / 100})');
+    } else {
+      _otherPlayerController?.setVolume((volume ~/ 1).toDouble());
     }
   }
 
@@ -110,7 +131,10 @@ class Tw591PlayController {
               '0';
       return double.tryParse(result) ?? 0.0;
     }
-    return 0.0;
+    return (_otherPlayerController
+                ?.videoPlayerController.value.position.inSeconds ??
+            0)
+        .toDouble();
   }
 
   /// 获取视频总时长
@@ -121,6 +145,9 @@ class Tw591PlayController {
               '0';
       return double.tryParse(result) ?? 0.0;
     }
-    return 0.0;
+    return (_otherPlayerController
+                ?.videoPlayerController.value.duration.inSeconds ??
+            0)
+        .toDouble();
   }
 }

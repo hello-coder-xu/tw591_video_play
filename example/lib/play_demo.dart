@@ -86,7 +86,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
     } else if (selectType == 1) {
       initUrl = 'https://fb.watch/kD5Ij9HS2T/';
     } else {
-      initUrl = '';
+      initUrl = 'https://livedoc.cgtn.com/500d/prog_index.m3u8';
     }
     return SizedBox(
       width: 411,
