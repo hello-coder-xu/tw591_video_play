@@ -172,12 +172,6 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
             },
             icon: Icon(mute ? Icons.volume_up : Icons.volume_off),
           ),
-          IconButton(
-            onPressed: () {
-              controller.load();
-            },
-            icon: const Icon(Icons.refresh),
-          ),
         ],
       ),
     );

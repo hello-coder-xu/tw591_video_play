@@ -68,12 +68,6 @@ class Tw591PlayController {
     }
   }
 
-  /// 加载
-  void load({String? url}) {
-    if (_playByWebView) {
-      _controller?.runJavascript('load()');
-    }
-  }
 
   /// 当前是否静音
   Future<bool> isMute() async {
