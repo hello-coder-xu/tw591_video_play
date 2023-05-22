@@ -37,7 +37,6 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
     playerHtml = playerHtml.replaceAll('{initAutoplay}', '${widget.autoPlay}');
     playerHtml = playerHtml.replaceAll('{initMute}', '${widget.mute}');
     playerHtml = playerHtml.replaceAll('{initLoop}', '${widget.loop}');
-    print('test 打印 result=${playerHtml.substring(playerHtml.length-400)}');
     return playerHtml;
   }
 
