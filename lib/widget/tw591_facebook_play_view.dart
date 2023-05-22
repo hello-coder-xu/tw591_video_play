@@ -34,9 +34,10 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
       'packages/tw591_video_play/assets/facebook.html',
     );
     playerHtml = playerHtml.replaceAll('{initUrl}', widget.initUrl);
-    playerHtml = playerHtml.replaceAll('{autoplay}', '${widget.autoPlay}');
     playerHtml = playerHtml.replaceAll('{initAutoplay}', '${widget.autoPlay}');
     playerHtml = playerHtml.replaceAll('{initMute}', '${widget.mute}');
+    playerHtml = playerHtml.replaceAll('{initLoop}', '${widget.loop}');
+    print('test 打印 result=${playerHtml.substring(playerHtml.length-400)}');
     return playerHtml;
   }
 

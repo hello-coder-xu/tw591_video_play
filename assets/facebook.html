@@ -5,6 +5,7 @@
             let player
             var initAutoplay={initAutoplay}
             var initMute={initMute}
+            var initLoop={initLoop}
             window.fbAsyncInit = function() {
                 FB.init({
                     appId            : '',
@@ -20,11 +21,6 @@
                     if (msg.type === 'video') {
                         player = msg.instance
 
-                        // 是否自动播放 并且 有声音
-                        if(initAutoplay&&!initMute){
-                            unMute();
-                        }
-
                         // 播放
                         player.subscribe('startedPlaying',function(e) {
                             Tw591StateChange.postMessage('startedPlaying');
@@ -38,22 +34,25 @@
                         // 播放结束
                         player.subscribe('finishedPlaying',function(e) {
                             Tw591StateChange.postMessage('finishedPlaying');
-
-                            player.play();
+                            // 是否循环播放
+                            if(initLoop){
+                                play();
+                            }
                         });
 
-                        player.subscribe('startedBuffering',function(e) {
-                            console.log('facebook 打印','开始缓存')
-                        });
+                        // 是否自动播放
+                        if(initAutoplay){
+                            play();
+                        }
 
-                        player.subscribe('finishedBuffering',function(e) {
-                            console.log('facebook 打印','结束缓存')
-                        });
+                        // 有声音
+                        if(initMute){
+                            mute();
+                        }else{
+                            unMute();
+                        }
 
-                        player.subscribe('error',function(e) {
-                            console.log('facebook 打印','发送错误')
-                        });
-
+                        // 定时器
                         setInterval(() => {
                            Tw591TimeInterval.postMessage(player.getCurrentPosition());
                         }, 500)
@@ -105,16 +104,12 @@
             function setVolume(volume) {
                 player.setVolume(volume);
             }
-
-
-
-
 </script>
 <script async defer crossorigin="anonymous"
         src="https://connect.facebook.net/en_US/sdk.js"></script>
 <div class="fb-video"
      data-href="{initUrl}"
-     data-autoplay="{autoplay}"
+     data-autoplay="false"
      data-lazy="false"
      data-allowfullscreen="true">
 </div>
