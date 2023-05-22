@@ -31,6 +31,9 @@ class Tw591PlayController extends ChangeNotifier {
   /// 视频总时长
   double totalTime = 0;
 
+  /// 是否静音
+  bool isMute = false;
+
   /// 设置webView 控制器
   void setWebViewController(WebViewController controller) {
     _controller = controller;
@@ -80,20 +83,22 @@ class Tw591PlayController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 当前是否静音
-  Future<bool> isMute() async {
-    if (_playByWebView) {
-      String? result =
-          await _controller?.runJavascriptReturningResult('isMuted()');
-      return result == '1';
-    }
-
-    return 0 ==
-        (_otherPlayerController?.videoPlayerController.value.volume ?? 0);
-  }
+  // /// 当前是否静音
+  // Future<bool> isMute() async {
+  //   if (_playByWebView) {
+  //     String? result =
+  //         await _controller?.runJavascriptReturningResult('isMuted()');
+  //     print('test 当前是否静音 result=$result');
+  //     return result == '1';
+  //   }
+  //
+  //   return 0 ==
+  //       (_otherPlayerController?.videoPlayerController.value.volume ?? 0);
+  // }
 
   /// 静音
   void mute() {
+    isMute = true;
     if (_playByWebView) {
       _controller?.runJavascript('mute()');
     } else {
@@ -103,6 +108,7 @@ class Tw591PlayController extends ChangeNotifier {
 
   /// 非静音
   void unMute() {
+    isMute = false;
     if (_playByWebView) {
       _controller?.runJavascript('unMute()');
     } else {

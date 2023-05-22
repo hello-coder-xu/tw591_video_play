@@ -28,7 +28,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
   double sound = 1.0;
 
   /// 当前是否静音
-  bool mute = false;
+  bool get mute => controller.isMute;
 
   @override
   void initState() {
@@ -84,9 +84,10 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
       child: Tw591VideoPlayView(
         playController: controller,
         initUrl: initUrl,
-        mute: mute,
+        mute: false,
         loop: true,
-        autoPlay: false,
+        autoPlay: true,
+        displayUi: true,
       ),
     );
   }
@@ -152,15 +153,13 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
           IconButton(
             onPressed: () {
               if (mute) {
-                mute = false;
                 controller.unMute();
               } else {
-                mute = true;
                 controller.mute();
               }
               setState(() {});
             },
-            icon: Icon(mute ? Icons.volume_up : Icons.volume_off),
+            icon: Icon(mute ? Icons.volume_off : Icons.volume_up),
           ),
         ],
       ),
