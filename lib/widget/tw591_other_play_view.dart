@@ -59,7 +59,12 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
 
   void createController() async {
     videoPlayerController = VideoPlayerController.network(widget.initUrl);
-    await videoPlayerController.initialize();
+    try {
+      await videoPlayerController.initialize();
+    } catch (e) {
+      // 初始化失败
+      return;
+    }
 
     final chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
@@ -82,7 +87,8 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
 
   handlePlayerListener() {
     // 播放时间
-    widget.playController?.updateTimeInterval(videoPlayerController.value.position.inSeconds.toDouble());
+    widget.playController?.updateTimeInterval(
+        videoPlayerController.value.position.inSeconds.toDouble());
 
     // 播放状态
     if (videoPlayerController.value.isPlaying) {
