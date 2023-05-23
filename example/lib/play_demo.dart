@@ -13,7 +13,7 @@ class PlayDemoPage extends StatefulWidget {
 
 class _PlayDemoPageState extends State<PlayDemoPage> {
   /// 播放器控制器
-  Tw591PlayController controller = Tw591PlayController();
+  Tw591PlayController? controller;
 
   /// 最大宽度
   double get maxWidth => MediaQuery.of(context).size.width;
@@ -28,26 +28,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
   double sound = 1.0;
 
   /// 当前是否静音
-  bool get mute => controller.isMute;
-
-  @override
-  void initState() {
-    super.initState();
-
-    controller.addStatusListener((status) {
-      switch (status) {
-        case VideoPlayStatus.play:
-          debugPrint('test 测试 当前状态 ： 播放');
-          break;
-        case VideoPlayStatus.pause:
-          debugPrint('test 测试 当前状态 ： 暂停');
-          break;
-        case VideoPlayStatus.finish:
-          debugPrint('test 测试 当前状态 ： 结束');
-          break;
-      }
-    });
-  }
+  bool get mute => controller?.isMute ?? false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +48,22 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
     );
   }
 
+  setupController() {
+    controller?.addStatusListener((status) {
+      switch (status) {
+        case VideoPlayStatus.play:
+          debugPrint('test 测试 当前状态 ： 播放');
+          break;
+        case VideoPlayStatus.pause:
+          debugPrint('test 测试 当前状态 ： 暂停');
+          break;
+        case VideoPlayStatus.finish:
+          debugPrint('test 测试 当前状态 ： 结束');
+          break;
+      }
+    });
+  }
+
   /// 视频视图
   Widget playView() {
     String initUrl = '';
@@ -82,8 +79,11 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
       width: 411,
       height: 240,
       child: Tw591VideoPlayView(
-        playController: controller,
         initUrl: initUrl,
+        onViewCreated: (controller) {
+          this.controller = controller;
+          setupController();
+        },
         mute: false,
         loop: true,
         autoPlay: true,
@@ -157,22 +157,22 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
         children: [
           IconButton(
             onPressed: () {
-              controller.play();
+              controller?.play();
             },
             icon: const Icon(Icons.play_arrow),
           ),
           IconButton(
             onPressed: () {
-              controller.pause();
+              controller?.pause();
             },
             icon: const Icon(Icons.pause),
           ),
           IconButton(
             onPressed: () {
               if (mute) {
-                controller.unMute();
+                controller?.unMute();
               } else {
-                controller.mute();
+                controller?.mute();
               }
               setState(() {});
             },
@@ -196,7 +196,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
               onChanged: (value) {
                 sound = value;
                 setState(() {});
-                controller.setVolume(value * 100);
+                controller?.setVolume(value * 100);
               },
             ),
           ),

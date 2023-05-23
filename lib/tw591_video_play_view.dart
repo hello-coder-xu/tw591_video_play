@@ -12,7 +12,7 @@ typedef CustomView = Widget Function(VideoPlayStatus? videoPlayStatus);
 /// 播放器
 class Tw591VideoPlayView extends StatefulWidget {
   final String initUrl;
-  final Tw591PlayController? playController;
+  final Function(Tw591PlayController?)? onViewCreated;
   final bool mute;
   final bool loop;
   final bool autoPlay;
@@ -22,7 +22,7 @@ class Tw591VideoPlayView extends StatefulWidget {
   const Tw591VideoPlayView({
     Key? key,
     required this.initUrl,
-    this.playController,
+    this.onViewCreated,
     this.mute = true,
     this.loop = true,
     this.autoPlay = true,
@@ -40,9 +40,10 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
   @override
   void initState() {
     super.initState();
-    controller = widget.playController ?? Tw591PlayController();
+    controller = Tw591PlayController();
     controller.isMute = widget.mute;
-    widget.playController!.addListener(updateView);
+    controller.addListener(updateView);
+    widget.onViewCreated?.call(controller);
   }
 
   /// 更新视图
@@ -53,7 +54,7 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
   @override
   void didUpdateWidget(covariant Tw591VideoPlayView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    widget.playController!.removeListener(updateView);
+    controller.removeListener(updateView);
     if (widget.initUrl != oldWidget.initUrl) {
       controller.reset();
     }
@@ -61,7 +62,7 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
     if (widget.mute != oldWidget.mute) {
       controller.isMute = widget.mute;
     }
-    widget.playController!.addListener(updateView);
+    controller.addListener(updateView);
   }
 
   @override
@@ -89,7 +90,7 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
   Widget videoPlayView() {
     // 设置视频类型
     VideoPlayType type = Tw591VideoPlayHelper.getUrlType(widget.initUrl);
-    widget.playController?.videoType = type;
+    controller.videoType = type;
     switch (type) {
       case VideoPlayType.youtube:
         return Tw591YoutubePlayView(

@@ -184,6 +184,7 @@ class Tw591PlayController extends ChangeNotifier {
   @override
   void dispose() {
     _otherPlayerController?.dispose();
+    _otherPlayerController = null;
     reset();
     super.dispose();
   }
