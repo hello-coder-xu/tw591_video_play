@@ -13,6 +13,7 @@ typedef CustomView = Widget Function(VideoPlayStatus? videoPlayStatus);
 class Tw591VideoPlayView extends StatefulWidget {
   final String initUrl;
   final Function(Tw591PlayController?)? onViewCreated;
+  final Function(Tw591PlayController?)? onDispose;
   final bool mute;
   final bool loop;
   final bool autoPlay;
@@ -23,6 +24,7 @@ class Tw591VideoPlayView extends StatefulWidget {
     Key? key,
     required this.initUrl,
     this.onViewCreated,
+    this.onDispose,
     this.mute = true,
     this.loop = true,
     this.autoPlay = true,
@@ -68,6 +70,7 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
   @override
   void dispose() {
     controller.dispose();
+    widget.onDispose?.call(controller);
     super.dispose();
   }
 
@@ -91,9 +94,11 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
     // 设置视频类型
     VideoPlayType type = Tw591VideoPlayHelper.getUrlType(widget.initUrl);
     controller.videoType = type;
+    final key = ValueKey(widget.initUrl);
     switch (type) {
       case VideoPlayType.youtube:
         return Tw591YoutubePlayView(
+          key: key,
           initUrl: widget.initUrl,
           mute: widget.mute,
           loop: widget.loop,
@@ -102,6 +107,7 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
         );
       case VideoPlayType.facebook:
         return Tw591FacebookPlayView(
+          key: key,
           initUrl: widget.initUrl,
           mute: widget.mute,
           loop: widget.loop,
@@ -110,6 +116,7 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
         );
       case VideoPlayType.other:
         return Tw591OtherPlayView(
+          key: key,
           initUrl: widget.initUrl,
           mute: widget.mute,
           loop: widget.loop,
