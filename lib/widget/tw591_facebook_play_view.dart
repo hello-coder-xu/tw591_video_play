@@ -49,7 +49,7 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
-      ignoring: false,
+      ignoring: true,
       child: WebView(
         javascriptMode: JavascriptMode.unrestricted,
         allowsInlineMediaPlayback: true,

@@ -92,7 +92,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
           if (controller != this.controller) return;
           this.controller = null;
         },
-        mute: false,
+        mute: true,
         loop: true,
         autoPlay: true,
         displayUi: true,

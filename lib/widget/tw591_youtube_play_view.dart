@@ -48,7 +48,7 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
         : '${widget.videoHeight}px';
     playerHtml = playerHtml.replaceAll('{videoHeight}', videoHeight);
     playerHtml = playerHtml.replaceAll('{initAutoplay}', '${widget.autoPlay}');
-    playerHtml = playerHtml.replaceAll('{initMute}', '${widget.mute}');
+    playerHtml = playerHtml.replaceAll('{initMute}', '${widget.mute ? 1 : 0}');
     playerHtml = playerHtml.replaceAll('{initLoop}', '${widget.loop}');
     return playerHtml;
   }
