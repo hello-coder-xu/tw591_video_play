@@ -8,6 +8,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 /// 播放facebook视频
 class Tw591FacebookPlayView extends StatefulWidget {
   final String initUrl;
+  final String blurBackgroundImageUrl;
   final bool mute;
   final bool loop;
   final bool autoPlay;
@@ -16,6 +17,7 @@ class Tw591FacebookPlayView extends StatefulWidget {
   const Tw591FacebookPlayView({
     Key? key,
     required this.initUrl,
+    this.blurBackgroundImageUrl = '',
     this.mute = true,
     this.loop = true,
     this.autoPlay = false,
@@ -34,6 +36,10 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
       'packages/tw591_video_play/assets/facebook.html',
     );
     playerHtml = playerHtml.replaceAll('{initUrl}', widget.initUrl);
+    playerHtml = playerHtml.replaceAll(
+        '{blurBackgroundImageUrl}', widget.blurBackgroundImageUrl);
+    playerHtml = playerHtml.replaceAll('{isShowBlur}',
+        widget.blurBackgroundImageUrl.isEmpty ? 'none' : 'static');
     playerHtml = playerHtml.replaceAll('{initAutoplay}', '${widget.autoPlay}');
     playerHtml = playerHtml.replaceAll('{initMute}', '${widget.mute}');
     playerHtml = playerHtml.replaceAll('{initLoop}', '${widget.loop}');
@@ -43,7 +49,7 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
-      ignoring: true,
+      ignoring: false,
       child: WebView(
         javascriptMode: JavascriptMode.unrestricted,
         allowsInlineMediaPlayback: true,

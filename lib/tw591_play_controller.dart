@@ -128,6 +128,15 @@ class Tw591PlayController extends ChangeNotifier {
     }
   }
 
+  /// 设置毛玻璃背景
+  void blurBgImageUrl(String url) {
+    if (_playByWebView) {
+      _controller?.runJavascript('blurBgImageUrl($url)');
+    } else {
+
+    }
+  }
+
   /// 获取当前播放时间
   Future<double> getCurrentTime() async {
     if (_playByWebView) {

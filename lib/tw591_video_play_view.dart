@@ -12,8 +12,10 @@ typedef CustomView = Widget Function(VideoPlayStatus? videoPlayStatus);
 /// 播放器
 class Tw591VideoPlayView extends StatefulWidget {
   final String initUrl;
+  final String blurBackgroundImageUrl;
   final Function(Tw591PlayController?)? onViewCreated;
   final Function(Tw591PlayController?)? onDispose;
+  final double? videoHeight;
   final bool mute;
   final bool loop;
   final bool autoPlay;
@@ -23,8 +25,10 @@ class Tw591VideoPlayView extends StatefulWidget {
   const Tw591VideoPlayView({
     Key? key,
     required this.initUrl,
+    this.blurBackgroundImageUrl = '',
     this.onViewCreated,
     this.onDispose,
+    this.videoHeight,
     this.mute = true,
     this.loop = true,
     this.autoPlay = true,
@@ -69,8 +73,8 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
 
   @override
   void dispose() {
-    controller.dispose();
     widget.onDispose?.call(controller);
+    controller.dispose();
     super.dispose();
   }
 
@@ -100,6 +104,8 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
         return Tw591YoutubePlayView(
           key: key,
           initUrl: widget.initUrl,
+          blurBackgroundImageUrl: widget.blurBackgroundImageUrl,
+          videoHeight: widget.videoHeight,
           mute: widget.mute,
           loop: widget.loop,
           autoPlay: widget.autoPlay,
@@ -109,6 +115,7 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
         return Tw591FacebookPlayView(
           key: key,
           initUrl: widget.initUrl,
+          blurBackgroundImageUrl: widget.blurBackgroundImageUrl,
           mute: widget.mute,
           loop: widget.loop,
           autoPlay: widget.autoPlay,
@@ -118,6 +125,7 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
         return Tw591OtherPlayView(
           key: key,
           initUrl: widget.initUrl,
+          blurBackgroundImageUrl: widget.blurBackgroundImageUrl,
           mute: widget.mute,
           loop: widget.loop,
           autoPlay: widget.autoPlay,

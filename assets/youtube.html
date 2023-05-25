@@ -1,198 +1,240 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <style>
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-                background-color: #000000;
-                overflow: hidden;
-                position: fixed;
-                height: 100%;
-                width: 100%;
-                pointer-events: none;
-            }
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
 
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            /* background-color: #000000; */
+            /* overflow: hidden; */
+            height: 100%;
+            width: 100%;
+            pointer-events: none;
+        }
 
+        #background_img {
+            width: 100%;
+            height: 100vh;
+            background-image: url({blurBackgroundImageUrl});
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .blur {
+            display: '{isShowBlur}';
+            background-color: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* 居中展示播放器 */
+        #player {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100%;
+            transform: translate(-50%, -50%);
+        }
     </style>
-    <meta name='viewport'
-          content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
 </head>
-<body>
-<div id="player"></div>
-<script>
-            var tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            var firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-            var player;
-            var timerId;
-            var initAutoplay={initAutoplay}
-            var initMute={initMute}
-            var initLoop={initLoop}
-            // 初始化播放器
-            function onYouTubeIframeAPIReady() {
-                player = new YT.Player('player', {
-                    height: '100%',
-                    width: '100%',
-                    videoId: '{videoId}',
-                    playerVars: {
-                        'controls': 0,
-                        'playsinline': 1,
-                        'enablejsapi': 1,
-                        'fs': 0,
-                        'rel': 0,
-                        'showinfo': 0,
-                        'iv_load_policy': 3,
-                        'modestbranding': 1,
-                        'cc_lang_pref': 'en'
-                    },
-                    events: {
-                        onReady: function(event) {
-                          console.log('youtube 打印','准备好 initMute='+initMute);
-                          if(initAutoplay){
-                            play();
-                          }
 
-                          if(initMute==1){
+<body>
+    <!-- 背景图 -->
+    <div id="background_img">
+        <!-- 毛玻璃 -->
+        <div class="blur" />
+    </div>
+
+    <!-- YT播放器 -->
+    <div id="player"></div>
+    <script>
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        var player;
+        var timerId;
+        var initAutoplay = { initAutoplay }
+        var initMute = { initMute }
+        var initLoop = { initLoop }
+        // 初始化播放器
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '{videoHeight}',
+                width: '100%',
+                videoId: '{videoId}',
+                playerVars: {
+                    'controls': 0,
+                    'playsinline': 1,
+                    'enablejsapi': 1,
+                    'fs': 0,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'iv_load_policy': 3,
+                    'modestbranding': 1,
+                    'cc_lang_pref': 'en'
+                },
+                events: {
+                    onReady: function (event) {
+                        console.log('youtube 打印', '准备好 initMute=' + initMute);
+                        if (initAutoplay) {
+                            play();
+                        }
+
+                        if (initMute == 1) {
                             mute();
-                          }else{
+                        } else {
                             unMute();
-                          }
-                        },
-                        onStateChange: function(event) {
-                          sendPlayerStateChange(event.data);
-                        },
-                        onPlaybackQualityChange: function(event) {
-                          console.log('youtube 打印','清晰度变化') ;
-                         },
-                        onPlaybackRateChange: function(event) {
-                          console.log('youtube 打印','播放速度变化');
-                        },
-                        onError: function(error) {
-                           console.log('youtube 打印','视频出错了');
                         }
                     },
-                });
+                    onStateChange: function (event) {
+                        sendPlayerStateChange(event.data);
+                    },
+                    onPlaybackQualityChange: function (event) {
+                        console.log('youtube 打印', '清晰度变化');
+                    },
+                    onPlaybackRateChange: function (event) {
+                        console.log('youtube 打印', '播放速度变化');
+                    },
+                    onError: function (error) {
+                        console.log('youtube 打印', '视频出错了');
+                    }
+                },
+            });
+        }
+
+        // 状态变化
+        function sendPlayerStateChange(playerState) {
+            // 向原生发送播放状态
+            Tw591StateChange.postMessage(playerState);
+
+            if (playerState == 0 && initLoop) {
+                play();
             }
 
-            // 状态变化
-            function sendPlayerStateChange(playerState) {
-                 // 向原生发送播放状态
-                 Tw591StateChange.postMessage(playerState);
-
-                 if(playerState==0&&initLoop){
-                    play();
-                 }
-
-                 // 取消定时器
-                 clearTimeout(timerId);
-                 // 开启定时器
-                 if (playerState == 1) {
-                     startSendCurrentTimeInterval();
-                     sendVideoData(player);
-                 }
+            // 取消定时器
+            clearTimeout(timerId);
+            // 开启定时器
+            if (playerState == 1) {
+                startSendCurrentTimeInterval();
+                sendVideoData(player);
             }
+        }
 
-            // 获取视频信息
-            function sendVideoData(player) {
-                var videoData = {
-                    'duration': player.getDuration(),
-                    'title': player.getVideoData().title,
-                    'author': player.getVideoData().author,
-                    'videoId': player.getVideoData().video_id
-                };
-                Tw591VideoInfo.postMessage(JSON.stringify(videoData));
-            }
+        // 获取视频信息
+        function sendVideoData(player) {
+            var videoData = {
+                'duration': player.getDuration(),
+                'title': player.getVideoData().title,
+                'author': player.getVideoData().author,
+                'videoId': player.getVideoData().video_id
+            };
+            Tw591VideoInfo.postMessage(JSON.stringify(videoData));
+        }
 
-            function startSendCurrentTimeInterval() {
-                timerId = setInterval(function () {
-                  Tw591TimeInterval.postMessage(player.getCurrentTime());
-                }, 500);
-            }
+        function startSendCurrentTimeInterval() {
+            timerId = setInterval(function () {
+                Tw591TimeInterval.postMessage(player.getCurrentTime());
+            }, 500);
+        }
 
-            // 获取当前播放时间
-            function getCurrentTime(){
-                return player.getCurrentTime();
-            }
+        // 获取当前播放时间
+        function getCurrentTime() {
+            return player.getCurrentTime();
+        }
 
-            // 获取视频总时间
-            function getTotalTime(){
-                return player.getDuration();
-            }
+        // 获取视频总时间
+        function getTotalTime() {
+            return player.getDuration();
+        }
 
-            // 设置播放
-            function play() {
-                player.playVideo();
-            }
+        // 设置播放
+        function play() {
+            player.playVideo();
+        }
 
-            // 设置暂停
-            function pause() {
-                player.pauseVideo();
-            }
+        // 设置暂停
+        function pause() {
+            player.pauseVideo();
+        }
 
 
-            // 是否为静音
-            function isMuted(){
-              if(player.isMuted()){
+        // 是否为静音
+        function isMuted() {
+            if (player.isMuted()) {
                 return 1;
-              }
-              return 0;
             }
+            return 0;
+        }
 
-            // 设置静音
-            function mute() {
-                player.mute();
-            }
+        // 设置静音
+        function mute() {
+            player.mute();
+        }
 
-            // 设置非静音
-            function unMute() {
-                player.unMute();
-            }
+        // 设置非静音
+        function unMute() {
+            player.unMute();
+        }
 
-            // 设置音量(0-100整数)
-            function setVolume(volume) {
-                player.setVolume(volume);
-            }
+        // 设置音量(0-100整数)
+        function setVolume(volume) {
+            player.setVolume(volume);
+        }
 
-            // 跳过秒数(快进)
-            function seekTo(position, seekAhead) {
-                player.seekTo(position, seekAhead);
-            }
-
-
-            function setSize(width, height) {
-                player.setSize(width, height);
-            }
-
-            function setPlaybackRate(rate) {
-                player.setPlaybackRate(rate);
-            }
-
-            function setTopMargin(margin) {
-                document.getElementById("player").style.marginTop = margin;
-            }
-
-             function loadById(loadSettings) {
-                player.loadVideoById(loadSettings);
-            }
-
-            function cueById(cueSettings) {
-                player.cueVideoById(cueSettings);
-            }
-
-            function loadPlaylist(playlist, index, startAt) {
-                player.loadPlaylist(playlist, 'playlist', index, startAt);
-            }
-
-            function cuePlaylist(playlist, index, startAt) {
-                player.cuePlaylist(playlist, 'playlist', index, startAt);
-            }
+        // 跳过秒数(快进)
+        function seekTo(position, seekAhead) {
+            player.seekTo(position, seekAhead);
+        }
 
 
+        function setSize(width, height) {
+            player.setSize(width, height);
+        }
+
+        function setPlaybackRate(rate) {
+            player.setPlaybackRate(rate);
+        }
+
+        function setTopMargin(margin) {
+            document.getElementById("player").style.marginTop = margin;
+        }
+
+        function loadById(loadSettings) {
+            player.loadVideoById(loadSettings);
+        }
+
+        function cueById(cueSettings) {
+            player.cueVideoById(cueSettings);
+        }
+
+        function loadPlaylist(playlist, index, startAt) {
+            player.loadPlaylist(playlist, 'playlist', index, startAt);
+        }
+
+        function cuePlaylist(playlist, index, startAt) {
+            player.cuePlaylist(playlist, 'playlist', index, startAt);
+        }
+
+        // 设置毛玻璃背景
+        function blurBgImageUrl(url) {
+            var bgImgDiv = document.getElementById("background_img");
+            bgImgDiv.style.backgroundImage = 'url(' + url + ')';
+        }
 
 
-</script>
+    </script>
 </body>
+
 </html>

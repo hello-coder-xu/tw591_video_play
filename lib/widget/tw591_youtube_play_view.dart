@@ -8,6 +8,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 /// 播放youtube视频
 class Tw591YoutubePlayView extends StatefulWidget {
   final String initUrl;
+  final String blurBackgroundImageUrl;
+  final double? videoHeight;
   final bool mute;
   final bool loop;
   final bool autoPlay;
@@ -17,6 +19,8 @@ class Tw591YoutubePlayView extends StatefulWidget {
     Key? key,
     required this.initUrl,
     required this.playController,
+    this.blurBackgroundImageUrl = '',
+    this.videoHeight,
     this.mute = true,
     this.loop = true,
     this.autoPlay = false,
@@ -35,6 +39,14 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
     );
     String videoId = Tw591VideoPlayHelper.convertUrlToId(widget.initUrl);
     playerHtml = playerHtml.replaceAll('{videoId}', videoId);
+    playerHtml = playerHtml.replaceAll(
+        '{blurBackgroundImageUrl}', widget.blurBackgroundImageUrl);
+    playerHtml = playerHtml.replaceAll('{isShowBlur}',
+        widget.blurBackgroundImageUrl.isEmpty ? 'none' : 'static');
+    String videoHeight = widget.videoHeight == null
+        ? '100%'
+        : '${widget.videoHeight}px';
+    playerHtml = playerHtml.replaceAll('{videoHeight}', videoHeight);
     playerHtml = playerHtml.replaceAll('{initAutoplay}', '${widget.autoPlay}');
     playerHtml = playerHtml.replaceAll('{initMute}', '${widget.mute}');
     playerHtml = playerHtml.replaceAll('{initLoop}', '${widget.loop}');
@@ -44,7 +56,7 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
-      ignoring: false,
+      ignoring: true,
       child: WebView(
         javascriptMode: JavascriptMode.unrestricted,
         allowsInlineMediaPlayback: true,

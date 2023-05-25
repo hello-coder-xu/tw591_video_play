@@ -1,121 +1,188 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .a {
+            position: relative;
+        }
+
+        #background_img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url({blurBackgroundImageUrl});
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #blur {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: '{isShowBlur}';
+            background-color: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* 居中展示播放器 */
+        #fb_player {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100%;
+            /* 不需要设置高度，fb的视频会自己设置高度，设置了也不生效 */
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+</head>
+
 <body>
-<script>
-            let player
-            var initAutoplay={initAutoplay}
-            var initMute={initMute}
-            var initLoop={initLoop}
-            var timerId;
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId            : '',
-                    autoLogAppEvents : true,
-                    xfbml            : true,
-                    version          : 'v16.0'
-                });
+    <div class="a"></div>
+    <!-- 背景图 -->
+    <div id="background_img">
+        <!-- 毛玻璃 -->
+        <div id="blur" />
+    </div>
 
-                // 播放器初始化完成
-                FB.Event.subscribe('xfbml.ready', (msg) => {
-                    console.log('facebook 打印 准备好', msg.type)
-                    // 获取视频数据
-                    if (msg.type === 'video') {
-                        player = msg.instance
+    <!-- fb播放器 -->
+    <script>
+        let player
+        var initAutoplay = { initAutoplay }
+        var initMute = { initMute }
+        var initLoop = { initLoop }
+        var timerId;
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '',
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v16.0'
+            });
 
-                        // 播放
-                        player.subscribe('startedPlaying',function(e) {
-                            Tw591StateChange.postMessage('startedPlaying');
-                        });
+            // 播放器初始化完成
+            FB.Event.subscribe('xfbml.ready', (msg) => {
+                console.log('facebook 打印 准备好', msg.type)
+                // 获取视频数据
+                if (msg.type === 'video') {
+                    player = msg.instance
 
-                        // 暂停播放
-                        player.subscribe('paused',function(e) {
-                            Tw591StateChange.postMessage('paused');
-                        });
+                    // 播放
+                    player.subscribe('startedPlaying', function (e) {
+                        Tw591StateChange.postMessage('startedPlaying');
+                    });
 
-                        // 播放结束
-                        player.subscribe('finishedPlaying',function(e) {
-                            Tw591StateChange.postMessage('finishedPlaying');
-                            // 是否循环播放
-                            if(initLoop){
-                                play();
-                            }
-                        });
+                    // 暂停播放
+                    player.subscribe('paused', function (e) {
+                        Tw591StateChange.postMessage('paused');
+                    });
 
-                        // 是否自动播放
-                        if(initAutoplay){
+                    // 播放结束
+                    player.subscribe('finishedPlaying', function (e) {
+                        Tw591StateChange.postMessage('finishedPlaying');
+                        // 是否循环播放
+                        if (initLoop) {
                             play();
                         }
+                    });
 
-                        // 有声音
-                        if(initMute){
-                            mute();
-                        }else{
-                            unMute();
-                        }
-
-                        // 取消定时器
-                        clearTimeout(timerId);
-                        // 定时器
-                        timerId = setInterval(() => {
-                           Tw591TimeInterval.postMessage(player.getCurrentPosition());
-                        }, 500)
+                    // 是否自动播放
+                    if (initAutoplay) {
+                        play();
                     }
-                })
-            };
+
+                    // 有声音
+                    if (initMute) {
+                        mute();
+                    } else {
+                        unMute();
+                    }
+
+                    // 取消定时器
+                    clearTimeout(timerId);
+                    // 定时器
+                    timerId = setInterval(() => {
+                        Tw591TimeInterval.postMessage(player.getCurrentPosition());
+                    }, 500)
+                }
+            })
+        };
 
 
-             // 获取当前播放时间
-            function getCurrentTime(){
-                return player.getCurrentPosition();
-            }
+        // 获取当前播放时间
+        function getCurrentTime() {
+            return player.getCurrentPosition();
+        }
 
-            // 获取视频总时间
-            function getTotalTime(){
-                return player.getDuration();
-            }
+        // 获取视频总时间
+        function getTotalTime() {
+            return player.getDuration();
+        }
 
-            // 设置播放
-            function play() {
-                player.play();
-            }
+        // 设置播放
+        function play() {
+            player.play();
+        }
 
-            // 设置暂停
-            function pause() {
-                player.pause();
-            }
+        // 设置暂停
+        function pause() {
+            player.pause();
+        }
 
-            // 是否为静音
-            function isMuted(){
-              if(player.isMuted()){
+        // 是否为静音
+        function isMuted() {
+            if (player.isMuted()) {
                 return 1;
-              }
-              return 0;
             }
+            return 0;
+        }
 
-            // 设置静音
-            function mute() {
-                player.mute();
-            }
+        // 设置静音
+        function mute() {
+            player.mute();
+        }
 
-            // 设置非静音
-            function unMute() {
-                player.unmute();
-            }
+        // 设置非静音
+        function unMute() {
+            player.unmute();
+        }
 
-            // 设置音量(0-1)
-            function setVolume(volume) {
-                player.setVolume(volume);
-            }
+        // 设置音量(0-1)
+        function setVolume(volume) {
+            player.setVolume(volume);
+        }
 
+        // 设置毛玻璃背景
+        function blurBgImageUrl(url) {
+            var bgImgDiv = document.getElementById("background_img");
+            bgImgDiv.style.backgroundImage = 'url(' + url + ')';
+        }
+    </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <div id="fb_player">
+        <div class="fb-video" data-href="{initUrl}" data-autoplay="false" data-lazy="false"
+            data-allowfullscreen="false">
+        </div>
+    </div>
 
-</script>
-<script async defer crossorigin="anonymous"
-        src="https://connect.facebook.net/en_US/sdk.js"></script>
-<div class="fb-video"
-     data-href="{initUrl}"
-     data-autoplay="false"
-     data-lazy="false"
-     data-allowfullscreen="false">
-</div>
 </body>
+
 </html>

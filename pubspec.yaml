@@ -15,6 +15,7 @@ dependencies:
   # fplayer: ^1.0.4
   chewie: ^1.5.0
   video_player: ^2.6.1
+  cached_network_image: any
   #  flutter_inappwebview: ^5.7.2+3
   # webview
   webview_flutter:

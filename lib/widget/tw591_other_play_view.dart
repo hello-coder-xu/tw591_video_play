@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
@@ -6,6 +9,7 @@ import 'package:video_player/video_player.dart';
 
 class Tw591OtherPlayView extends StatefulWidget {
   final String initUrl;
+  final String blurBackgroundImageUrl;
   final bool mute;
   final bool loop;
   final bool autoPlay;
@@ -14,6 +18,7 @@ class Tw591OtherPlayView extends StatefulWidget {
   const Tw591OtherPlayView({
     super.key,
     required this.initUrl,
+    this.blurBackgroundImageUrl = '',
     this.mute = true,
     this.loop = true,
     this.autoPlay = false,
@@ -48,12 +53,53 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
 
   @override
   Widget build(BuildContext context) {
-    if (chewieController == null ||
-        !videoPlayerController.value.isInitialized) {
+    if (chewieController == null) {
       return Container();
     }
-    return Chewie(
-      controller: chewieController!,
+    return Stack(
+      children: [
+        Positioned(
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          child: _buildBgImageView(),
+        ),
+        Positioned(
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          child: _buildBgImageBlur(),
+        ),
+        Chewie(
+          controller: chewieController!,
+        ),
+      ],
+    );
+  }
+
+  /// 毛玻璃层
+  Widget _buildBgImageBlur() {
+    if (widget.blurBackgroundImageUrl.isEmpty) return const SizedBox.shrink();
+    return RepaintBoundary(
+      child: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(color: Colors.black.withOpacity(0.3)),
+        ),
+      ),
+    );
+  }
+
+  /// 底部背景
+  Widget _buildBgImageView() {
+    if (widget.blurBackgroundImageUrl.isEmpty) {
+      return Container(color: Colors.black);
+    }
+    return CachedNetworkImage(
+      fit: BoxFit.cover,
+      imageUrl: widget.blurBackgroundImageUrl,
     );
   }
 
@@ -65,7 +111,6 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
       // 初始化失败
       return;
     }
-
     final chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
       autoPlay: widget.autoPlay,

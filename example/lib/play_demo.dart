@@ -77,34 +77,42 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
     }
     return SizedBox(
       width: 411,
-      height: 240,
+      height: 340,
       child: Tw591VideoPlayView(
         initUrl: initUrl,
+        // blurBackgroundImageUrl: '',
+        blurBackgroundImageUrl:
+            'https://img1.baidu.com/it/u=4169339063,797673609&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=935',
+        videoHeight: 411 * 9 / 16,
         onViewCreated: (controller) {
           this.controller = controller;
           setupController();
+        },
+        onDispose: (controller) {
+          if (controller != this.controller) return;
+          this.controller = null;
         },
         mute: false,
         loop: true,
         autoPlay: true,
         displayUi: true,
-        customView: (videoPlayStatus) {
-          if (videoPlayStatus == null) {
-            return Container(
-              alignment: Alignment.center,
-              color: Colors.green.withOpacity(0.5),
-              child: const Text(
-                '我是封面图',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                ),
-              ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
+        // customView: (videoPlayStatus) {
+        //   if (videoPlayStatus == null) {
+        //     return Container(
+        //       alignment: Alignment.center,
+        //       color: Colors.green.withOpacity(0.5),
+        //       child: const Text(
+        //         '我是封面图',
+        //         style: TextStyle(
+        //           fontSize: 24,
+        //           color: Colors.white,
+        //         ),
+        //       ),
+        //     );
+        //   } else {
+        //     return const SizedBox.shrink();
+        //   }
+        // },
       ),
     );
   }
