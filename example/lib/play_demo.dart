@@ -72,6 +72,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
     } else if (selectType == 1) {
       initUrl = 'https://fb.watch/kD5Ij9HS2T/';
     } else {
+      // initUrl = 'http://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4';
       initUrl =
           'https://video.591.com.tw/online/target/hls/union/2023/05/08/pc/1683516699736-859624-476554.m3u8';
     }
@@ -93,7 +94,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
           this.controller = null;
         },
         mute: true,
-        loop: true,
+        loop: false,
         autoPlay: true,
         displayUi: true,
         // customView: (videoPlayStatus) {

@@ -1,11 +1,10 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-// import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
 import 'package:tw591_video_play/tw591_play_controller.dart';
-// import 'package:video_player/video_player.dart';
+import 'package:fplayer/fplayer.dart';
 
 class Tw591OtherPlayView extends StatefulWidget {
   final String initUrl;
@@ -30,140 +29,144 @@ class Tw591OtherPlayView extends StatefulWidget {
 }
 
 class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
+  FPlayer fPlayer = FPlayer();
+
+  VideoPlayStatus? playStatus;
+
+  @override
+  void initState() {
+    super.initState();
+
+    createController();
+  }
+
+  @override
+  void dispose() {
+    // 移除监听
+    fPlayer.removeListener(handlePlayerListener);
+    // 释放
+    fPlayer.release();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.amber,
-      child: const Center(
-        child: Text(
-          '维修中，不要管我, Thx',
+    return Stack(
+      children: [
+        Positioned(
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          child: _buildBgImageView(),
+        ),
+        Positioned(
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          child: _buildBgImageBlur(),
+        ),
+        FView(
+          player: fPlayer,
+          panelBuilder: (player, data, context, viewSize, texturePos) {
+            // 不显示控制表盘
+            return const SizedBox.shrink();
+          },
+        ),
+      ],
+    );
+  }
+
+  /// 毛玻璃层
+  Widget _buildBgImageBlur() {
+    if (widget.blurBackgroundImageUrl.isEmpty) return const SizedBox.shrink();
+    return RepaintBoundary(
+      child: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(color: Colors.black.withOpacity(0.3)),
         ),
       ),
     );
   }
-  // late final VideoPlayerController videoPlayerController;
-  // ChewieController? chewieController;
 
-  // VideoPlayStatus? playStatus;
+  /// 底部背景
+  Widget _buildBgImageView() {
+    if (widget.blurBackgroundImageUrl.isEmpty) {
+      return Container(color: Colors.black);
+    }
+    return CachedNetworkImage(
+      fit: BoxFit.cover,
+      imageUrl: widget.blurBackgroundImageUrl,
+    );
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  void createController() async {
+    // 视频播放相关配置
+    await fPlayer.setOption(FOption.hostCategory, "enable-snapshot", 1);
+    await fPlayer.setOption(FOption.hostCategory, "request-screen-on", 1);
+    await fPlayer.setOption(FOption.hostCategory, "request-audio-focus", 1);
+    await fPlayer.setOption(FOption.playerCategory, "reconnect", 20);
+    await fPlayer.setOption(FOption.playerCategory, "framedrop", 20);
+    await fPlayer.setOption(FOption.playerCategory, "enable-accurate-seek", 1);
+    await fPlayer.setOption(FOption.playerCategory, "mediacodec", 1);
+    await fPlayer.setOption(FOption.playerCategory, "packet-buffering", 0);
+    await fPlayer.setOption(FOption.playerCategory, "soundtouch", 1);
 
-  //   createController();
-  // }
+    // 播放视频
+    await fPlayer.setDataSource(
+      widget.initUrl,
+      autoPlay: widget.autoPlay,
+    );
+    // 默认播放器的循环次数是1， 即不循环播放。如果设置循环次数0，表示无限循环
+    await fPlayer.setLoop(widget.loop ? 0 : 1);
 
-  // @override
-  // void dispose() {
-  //   // 移除监听
-  //   videoPlayerController.removeListener(handlePlayerListener);
-  //   videoPlayerController.dispose();
-  //   chewieController?.dispose();
-  //   super.dispose();
-  // }
+    // 初始化静音
+    fPlayer.setVolume(widget.mute ? 0 : 1);
+    // 添加监听
+    fPlayer.addListener(handlePlayerListener);
+    // 记录播放器
+    widget.playController?.setOtherPlayerController(fPlayer);
+  }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   if (chewieController == null) {
-  //     return Container();
-  //   }
-  //   return Stack(
-  //     children: [
-  //       Positioned(
-  //         left: 0,
-  //         top: 0,
-  //         right: 0,
-  //         bottom: 0,
-  //         child: _buildBgImageView(),
-  //       ),
-  //       Positioned(
-  //         left: 0,
-  //         top: 0,
-  //         right: 0,
-  //         bottom: 0,
-  //         child: _buildBgImageBlur(),
-  //       ),
-  //       Chewie(
-  //         controller: chewieController!,
-  //       ),
-  //     ],
-  //   );
-  // }
+  handlePlayerListener() {
+    // 播放时间
+    widget.playController
+        ?.updateTimeInterval(fPlayer.currentPos.inSeconds.toDouble());
 
-  // /// 毛玻璃层
-  // Widget _buildBgImageBlur() {
-  //   if (widget.blurBackgroundImageUrl.isEmpty) return const SizedBox.shrink();
-  //   return RepaintBoundary(
-  //     child: ClipRRect(
-  //       child: BackdropFilter(
-  //         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-  //         child: Container(color: Colors.black.withOpacity(0.3)),
-  //       ),
-  //     ),
-  //   );
-  // }
+    VideoPlayStatus? currentStatus = playStatus;
+    // 状态说明：https://fplayer.dev/basic/status.html
+    switch (fPlayer.value.state) {
+      case FState.idle: // 闲置状态
+        break;
+      case FState.initialized: // 初始化完成状态
+        break;
+      case FState.asyncPreparing: // 异步准备状态
+        break;
+      case FState.prepared: // 可以随时进行播放
+        break;
+      case FState.started: // 正在播放
+        currentStatus = VideoPlayStatus.play;
+        break;
+      case FState.paused: // 播放暂停
+        currentStatus = VideoPlayStatus.pause;
+        break;
+      case FState.completed: // 播放完成。 可重新从头开始播放。
+        currentStatus = VideoPlayStatus.finish;
+        break;
+      case FState.stopped: // 播放器各种线程占用资源都已经释放。 音频设备关闭。
+        break;
+      case FState.error: // 播放器出现错误
+        break;
+      case FState.end: // 播放器中所有需要手动释放的内存都释放完成。
+        break;
+    }
 
-  // /// 底部背景
-  // Widget _buildBgImageView() {
-  //   if (widget.blurBackgroundImageUrl.isEmpty) {
-  //     return Container(color: Colors.black);
-  //   }
-  //   return CachedNetworkImage(
-  //     fit: BoxFit.cover,
-  //     imageUrl: widget.blurBackgroundImageUrl,
-  //   );
-  // }
-
-  // void createController() async {
-  //   videoPlayerController = VideoPlayerController.network(widget.initUrl);
-  //   try {
-  //     await videoPlayerController.initialize();
-  //   } catch (e) {
-  //     // 初始化失败
-  //     return;
-  //   }
-  //   final chewieController = ChewieController(
-  //     videoPlayerController: videoPlayerController,
-  //     autoPlay: widget.autoPlay,
-  //     allowMuting: true,
-  //     looping: widget.loop,
-  //     showControls: false, // 不显示控制面板
-  //   );
-  //   this.chewieController = chewieController;
-
-  //   // 初始化静音
-  //   chewieController.setVolume(widget.mute ? 0 : 1);
-  //   // 添加监听
-  //   videoPlayerController.addListener(handlePlayerListener);
-  //   // 记录播放器
-  //   widget.playController?.setOtherPlayerController(chewieController);
-
-  //   setState(() {});
-  // }
-
-  // handlePlayerListener() {
-  //   // 播放时间
-  //   widget.playController?.updateTimeInterval(
-  //       videoPlayerController.value.position.inSeconds.toDouble());
-
-  //   // 播放状态
-  //   if (videoPlayerController.value.isPlaying) {
-  //     // 正在播放
-  //     const currentStatus = VideoPlayStatus.play;
-  //     if (playStatus != currentStatus) {
-  //       playStatus = currentStatus;
-  //       widget.playController?.updatePlayStatus(currentStatus);
-  //     }
-  //   } else {
-  //     // 没有在播放
-  //     bool isFinished = videoPlayerController.value.position >=
-  //         videoPlayerController.value.duration;
-  //     final currentStatus =
-  //         isFinished ? VideoPlayStatus.finish : VideoPlayStatus.pause;
-  //     if (playStatus != currentStatus) {
-  //       playStatus = currentStatus;
-  //       widget.playController?.updatePlayStatus(currentStatus);
-  //     }
-  //   }
-  // }
+    // 播放状态
+    if (playStatus != currentStatus && currentStatus != null) {
+      playStatus = currentStatus;
+      widget.playController?.updatePlayStatus(currentStatus);
+    }
+  }
 }

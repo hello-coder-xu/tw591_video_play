@@ -1,5 +1,5 @@
-// import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fplayer/fplayer.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -10,8 +10,8 @@ typedef PlayTimeInterval = Function(double current);
 class Tw591PlayController extends ChangeNotifier {
   WebViewController? _controller;
 
-  // /// other类型的播放控制器
-  // ChewieController? _otherPlayerController;
+  /// other类型的播放控制器
+  FPlayer? _otherPlayerController;
 
   // 状态变化
   PlayStatusChange? _updateStatus;
@@ -40,9 +40,9 @@ class Tw591PlayController extends ChangeNotifier {
   }
 
   /// 设置
-  // void setOtherPlayerController(ChewieController controller) {
-  //   _otherPlayerController = controller;
-  // }
+  void setOtherPlayerController(FPlayer controller) {
+    _otherPlayerController = controller;
+  }
 
   /// 视频类型
   void setVideoType(VideoPlayType type) {
@@ -68,7 +68,7 @@ class Tw591PlayController extends ChangeNotifier {
     if (_playByWebView) {
       _controller?.runJavascript('play()');
     } else {
-      // _otherPlayerController?.play();
+      _otherPlayerController?.start();
     }
     notifyListeners();
   }
@@ -78,7 +78,7 @@ class Tw591PlayController extends ChangeNotifier {
     if (_playByWebView) {
       _controller?.runJavascript('pause()');
     } else {
-      // _otherPlayerController?.pause();
+      _otherPlayerController?.pause();
     }
     notifyListeners();
   }
@@ -102,7 +102,7 @@ class Tw591PlayController extends ChangeNotifier {
     if (_playByWebView) {
       _controller?.runJavascript('mute()');
     } else {
-      // _otherPlayerController?.setVolume(0);
+      _otherPlayerController?.setVolume(0);
     }
   }
 
@@ -112,7 +112,7 @@ class Tw591PlayController extends ChangeNotifier {
     if (_playByWebView) {
       _controller?.runJavascript('unMute()');
     } else {
-      // _otherPlayerController?.setVolume(1);
+      _otherPlayerController?.setVolume(1);
     }
   }
 
@@ -124,7 +124,7 @@ class Tw591PlayController extends ChangeNotifier {
     } else if (videoType == VideoPlayType.facebook) {
       _controller?.runJavascript('setVolume(${vol / 100})');
     } else {
-      // _otherPlayerController?.setVolume(vol / 100);
+      _otherPlayerController?.setVolume(vol / 100);
     }
   }
 
@@ -143,11 +143,7 @@ class Tw591PlayController extends ChangeNotifier {
               '0';
       return double.tryParse(result) ?? 0.0;
     }
-    // return (_otherPlayerController
-    //             ?.videoPlayerController.value.position.inSeconds ??
-    //         0)
-    //     .toDouble();
-    return 0;
+    return (_otherPlayerController?.currentPos.inSeconds ?? 0).toDouble();
   }
 
   /// 获取视频总时长
@@ -158,11 +154,7 @@ class Tw591PlayController extends ChangeNotifier {
               '0';
       return double.tryParse(result) ?? 0.0;
     }
-    // return (_otherPlayerController
-    //             ?.videoPlayerController.value.duration.inSeconds ??
-    //         0)
-    //     .toDouble();
-    return 0;
+    return (_otherPlayerController?.value.duration.inSeconds ?? 0).toDouble();
   }
 
   /// 更新播放状态
@@ -192,7 +184,7 @@ class Tw591PlayController extends ChangeNotifier {
 
   @override
   void dispose() {
-    // _otherPlayerController = null;
+    _otherPlayerController = null;
     reset();
     super.dispose();
   }
