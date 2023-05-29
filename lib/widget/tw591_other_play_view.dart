@@ -73,6 +73,8 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
             // 不显示控制表盘
             return const SizedBox.shrink();
           },
+          color: Colors.transparent,
+          fit: FijkFit.ar16_9,
         ),
       ],
     );
