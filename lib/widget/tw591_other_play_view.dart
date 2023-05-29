@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
 import 'package:tw591_video_play/tw591_play_controller.dart';
-import 'package:fplayer/fplayer.dart';
+import 'package:fijkplayer/fijkplayer.dart';
 
 class Tw591OtherPlayView extends StatefulWidget {
   final String initUrl;
@@ -29,7 +29,7 @@ class Tw591OtherPlayView extends StatefulWidget {
 }
 
 class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
-  FPlayer fPlayer = FPlayer();
+  FijkPlayer fPlayer = FijkPlayer();
 
   VideoPlayStatus? playStatus;
 
@@ -67,7 +67,7 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
           bottom: 0,
           child: _buildBgImageBlur(),
         ),
-        FView(
+        FijkView(
           player: fPlayer,
           panelBuilder: (player, data, context, viewSize, texturePos) {
             // 不显示控制表盘
@@ -104,15 +104,15 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
 
   void createController() async {
     // 视频播放相关配置
-    await fPlayer.setOption(FOption.hostCategory, "enable-snapshot", 1);
-    await fPlayer.setOption(FOption.hostCategory, "request-screen-on", 1);
-    await fPlayer.setOption(FOption.hostCategory, "request-audio-focus", 1);
-    await fPlayer.setOption(FOption.playerCategory, "reconnect", 20);
-    await fPlayer.setOption(FOption.playerCategory, "framedrop", 20);
-    await fPlayer.setOption(FOption.playerCategory, "enable-accurate-seek", 1);
-    await fPlayer.setOption(FOption.playerCategory, "mediacodec", 1);
-    await fPlayer.setOption(FOption.playerCategory, "packet-buffering", 0);
-    await fPlayer.setOption(FOption.playerCategory, "soundtouch", 1);
+    await fPlayer.setOption(FijkOption.hostCategory, "enable-snapshot", 1);
+    await fPlayer.setOption(FijkOption.hostCategory, "request-screen-on", 1);
+    await fPlayer.setOption(FijkOption.hostCategory, "request-audio-focus", 1);
+    await fPlayer.setOption(FijkOption.playerCategory, "reconnect", 20);
+    await fPlayer.setOption(FijkOption.playerCategory, "framedrop", 20);
+    await fPlayer.setOption(FijkOption.playerCategory, "enable-accurate-seek", 1);
+    await fPlayer.setOption(FijkOption.playerCategory, "mediacodec", 1);
+    await fPlayer.setOption(FijkOption.playerCategory, "packet-buffering", 0);
+    await fPlayer.setOption(FijkOption.playerCategory, "soundtouch", 1);
 
     // 播放视频
     await fPlayer.setDataSource(
@@ -138,28 +138,28 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
     VideoPlayStatus? currentStatus = playStatus;
     // 状态说明：https://fplayer.dev/basic/status.html
     switch (fPlayer.value.state) {
-      case FState.idle: // 闲置状态
+      case FijkState.idle: // 闲置状态
         break;
-      case FState.initialized: // 初始化完成状态
+      case FijkState.initialized: // 初始化完成状态
         break;
-      case FState.asyncPreparing: // 异步准备状态
+      case FijkState.asyncPreparing: // 异步准备状态
         break;
-      case FState.prepared: // 可以随时进行播放
+      case FijkState.prepared: // 可以随时进行播放
         break;
-      case FState.started: // 正在播放
+      case FijkState.started: // 正在播放
         currentStatus = VideoPlayStatus.play;
         break;
-      case FState.paused: // 播放暂停
+      case FijkState.paused: // 播放暂停
         currentStatus = VideoPlayStatus.pause;
         break;
-      case FState.completed: // 播放完成。 可重新从头开始播放。
+      case FijkState.completed: // 播放完成。 可重新从头开始播放。
         currentStatus = VideoPlayStatus.finish;
         break;
-      case FState.stopped: // 播放器各种线程占用资源都已经释放。 音频设备关闭。
+      case FijkState.stopped: // 播放器各种线程占用资源都已经释放。 音频设备关闭。
         break;
-      case FState.error: // 播放器出现错误
+      case FijkState.error: // 播放器出现错误
         break;
-      case FState.end: // 播放器中所有需要手动释放的内存都释放完成。
+      case FijkState.end: // 播放器中所有需要手动释放的内存都释放完成。
         break;
     }
 

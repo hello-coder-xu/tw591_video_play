@@ -1,5 +1,5 @@
+import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fplayer/fplayer.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -11,7 +11,7 @@ class Tw591PlayController extends ChangeNotifier {
   WebViewController? _controller;
 
   /// other类型的播放控制器
-  FPlayer? _otherPlayerController;
+  FijkPlayer? _otherPlayerController;
 
   // 状态变化
   PlayStatusChange? _updateStatus;
@@ -40,7 +40,7 @@ class Tw591PlayController extends ChangeNotifier {
   }
 
   /// 设置
-  void setOtherPlayerController(FPlayer controller) {
+  void setOtherPlayerController(FijkPlayer controller) {
     _otherPlayerController = controller;
   }
 

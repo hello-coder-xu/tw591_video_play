@@ -1,16 +1,10 @@
 # This is a generated file; do not edit or check into version control.
-battery_plus=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/battery_plus-3.0.6/
-fplayer=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/fplayer-1.0.4/
+fijkplayer=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/fijkplayer-0.10.1/
 path_provider=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.15/
 path_provider_android=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.27/
 path_provider_foundation=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/path_provider_foundation-2.2.3/
 path_provider_linux=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.11/
 path_provider_windows=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.1.6/
-screen_brightness=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/screen_brightness-0.2.2/
-screen_brightness_android=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/screen_brightness_android-0.1.0+2/
-screen_brightness_ios=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/screen_brightness_ios-0.1.0/
-screen_brightness_macos=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/screen_brightness_macos-0.1.0+1/
-screen_brightness_windows=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/screen_brightness_windows-0.1.1/
 sqflite=/Users/lxf/.pub-cache/hosted/pub.dartlang.org/sqflite-2.2.8+4/
 webview_flutter=/Users/lxf/.pub-cache/git/plugins-2ed01a970d5f297ae79ba85c1be7f5fa27dacb4a/packages/webview_flutter/webview_flutter/
 webview_flutter_android=/Users/lxf/.pub-cache/git/plugins-2ed01a970d5f297ae79ba85c1be7f5fa27dacb4a/packages/webview_flutter/webview_flutter_android/
