@@ -103,17 +103,6 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
   }
 
   void createController() async {
-    // 视频播放相关配置
-    await fPlayer.setOption(FijkOption.hostCategory, "enable-snapshot", 1);
-    await fPlayer.setOption(FijkOption.hostCategory, "request-screen-on", 1);
-    await fPlayer.setOption(FijkOption.hostCategory, "request-audio-focus", 1);
-    await fPlayer.setOption(FijkOption.playerCategory, "reconnect", 20);
-    await fPlayer.setOption(FijkOption.playerCategory, "framedrop", 20);
-    await fPlayer.setOption(FijkOption.playerCategory, "enable-accurate-seek", 1);
-    await fPlayer.setOption(FijkOption.playerCategory, "mediacodec", 1);
-    await fPlayer.setOption(FijkOption.playerCategory, "packet-buffering", 0);
-    await fPlayer.setOption(FijkOption.playerCategory, "soundtouch", 1);
-
     // 播放视频
     await fPlayer.setDataSource(
       widget.initUrl,
