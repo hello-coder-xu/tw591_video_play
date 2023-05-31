@@ -170,6 +170,11 @@
             player.setVolume(volume);
         }
 
+        // 寻找指定位置
+        function seek(seconds) {
+            player.seek(seconds);
+        }
+
         // 设置毛玻璃背景
         function blurBgImageUrl(url) {
             var bgImgDiv = document.getElementById("background_img");

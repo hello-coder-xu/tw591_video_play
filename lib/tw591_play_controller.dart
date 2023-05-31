@@ -128,6 +128,21 @@ class Tw591PlayController extends ChangeNotifier {
     }
   }
 
+  void seekTo(double seconds) {
+    if (videoType == null) return;
+    switch (videoType!) {
+      case VideoPlayType.youtube:
+        _controller?.runJavascript('seekTo($seconds, "true")');
+        break;
+      case VideoPlayType.facebook:
+        _controller?.runJavascript('seekTo($seconds)');
+        break;
+      case VideoPlayType.other:
+        _otherPlayerController?.seekTo(seconds.toInt());
+        break;
+    }
+  }
+
   /// 设置毛玻璃背景
   void blurBgImageUrl(String url) {
     if (_playByWebView) {

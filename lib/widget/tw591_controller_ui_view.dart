@@ -25,6 +25,15 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
 
   bool displayUI = false;
 
+  /// 总播放时长
+  double get totalTime => widget.controller.totalTime;
+
+  /// 当前播放时长
+  double get currentTime => widget.controller.currentTime;
+
+  /// 滑块的值
+  late double sliderValue = currentTime;
+
   /// 显示控件UI
   void showControllerUi() {
     resetTime();
@@ -52,6 +61,13 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
   void dispose() {
     resetTime();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant Tw591ControllerUiView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    sliderValue = currentTime;
   }
 
   @override
@@ -182,24 +198,19 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
 
   /// 进度
   Widget bottomProgressView() {
-    double sliderValue = 0;
-    double totalTime = widget.controller.totalTime;
-    double currentTime = widget.controller.currentTime;
-    if (totalTime > 0) {
-      sliderValue = currentTime / totalTime;
-    }
     return SizedBox(
       height: 20,
       child: SliderTheme(
         data: SliderTheme.of(context).copyWith(
-          trackHeight: 5,
           // 轨道高度
-          trackShape: Tw591ControllerUiViewRectangularSliderTrackShape(),
+          trackHeight: 5,
           // 轨道形状，可以自定义
-          activeTrackColor: Colors.blueGrey,
+          trackShape: Tw591ControllerUiViewRectangularSliderTrackShape(),
           // 激活的轨道颜色
-          inactiveTrackColor: Colors.black26,
+          activeTrackColor: Colors.blueGrey,
           // 未激活的轨道颜色
+          inactiveTrackColor: Colors.black26,
+          // 滑块形状
           thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 5),
           thumbColor: Colors.white,
           // 滑块颜色
@@ -209,13 +220,30 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
           activeTickMarkColor: Colors.red, // 激活的刻度颜色
         ),
         child: Slider(
+          min: 0,
+          max: totalTime,
           value: sliderValue,
           activeColor: Colors.blue,
           inactiveColor: Colors.grey,
-          onChanged: (value) {},
+          onChanged: (value) {
+            updateSlider(value);
+          },
+          onChangeEnd: (value) {
+            updateSlider(value);
+            widget.controller.seekTo(value);
+            if (VideoPlayStatus.play != widget.controller.videoPlayStatus) {
+              widget.controller.play();
+            }
+          },
         ),
       ),
     );
+  }
+
+  /// 更新滑块
+  updateSlider(double value) {
+    sliderValue = value;
+    setState(() {});
   }
 }
 
