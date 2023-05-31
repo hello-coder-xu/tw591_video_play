@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tw591_video_play/helper/tw591_video_play_helper.dart';
 import 'package:tw591_video_play/tw591_play_controller.dart';
@@ -20,7 +22,8 @@ class Tw591VideoPlayView extends StatefulWidget {
   final bool loop;
   final bool autoPlay;
   final bool displayUi;
-  final CustomView? customView;
+  final CustomView? coverView;
+  final int hideCoverDuration;
 
   const Tw591VideoPlayView({
     Key? key,
@@ -33,7 +36,8 @@ class Tw591VideoPlayView extends StatefulWidget {
     this.loop = true,
     this.autoPlay = true,
     this.displayUi = false,
-    this.customView,
+    this.coverView,
+    this.hideCoverDuration = 3,
   }) : super(key: key);
 
   @override
@@ -42,6 +46,11 @@ class Tw591VideoPlayView extends StatefulWidget {
 
 class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
   late Tw591PlayController controller;
+
+  bool currentDisplayCover = true;
+  bool hasHideDisplayCover = false;
+  bool lock = false;
+  bool delayedFinish = false;
 
   @override
   void initState() {
@@ -54,6 +63,35 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
 
   /// 更新视图
   void updateView() {
+    VideoPlayStatus? videoPlayStatus = controller.videoPlayStatus;
+    if (videoPlayStatus == VideoPlayStatus.play) {
+      if (!lock) {
+        lock = true;
+        Future.delayed(Duration(seconds: widget.hideCoverDuration), () {
+          delayedFinish = true;
+          VideoPlayStatus? currentPlayStatus = controller.videoPlayStatus;
+          if (currentPlayStatus == VideoPlayStatus.play) {
+            currentDisplayCover = false;
+            if (mounted) setState(() {});
+            hasHideDisplayCover = true;
+          }
+        });
+      }
+      if (!hasHideDisplayCover) {
+        if (delayedFinish) {
+          currentDisplayCover = false;
+          hasHideDisplayCover = true;
+        } else {
+          currentDisplayCover = true;
+        }
+      }
+    } else {
+      if (!hasHideDisplayCover) {
+        currentDisplayCover = true;
+      } else {
+        currentDisplayCover = false;
+      }
+    }
     if (mounted) setState(() {});
   }
 
@@ -84,13 +122,24 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
     result = Stack(
       children: [
         result,
-        // 自定义视图
-        widget.customView?.call(controller.videoPlayStatus) ??
-            const SizedBox.shrink(),
+        // 封面视图
+        coverView(),
+        // 控制视图
         if (widget.displayUi) Tw591ControllerUiView(controller: controller),
       ],
     );
     return result;
+  }
+
+  /// 封面视图
+  Widget coverView() {
+    Widget? cover = widget.coverView?.call(controller.videoPlayStatus);
+    cover ??= const SizedBox.shrink();
+    if (!currentDisplayCover) {
+      return const SizedBox.shrink();
+    } else {
+      return cover;
+    }
   }
 
   /// 视频播放视图
