@@ -37,6 +37,11 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
   /// 显示控件UI
   void showControllerUi() {
     resetTime();
+    if (displayUI) {
+      displayUI = false;
+      if (mounted) setState(() {});
+      return;
+    }
     displayUI = true;
     if (mounted) setState(() {});
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -113,7 +118,6 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
         return IconButton(
           onPressed: () {
             widget.controller.pause();
-            showControllerUi();
           },
           icon: const Icon(
             Icons.pause_circle_filled,
@@ -125,8 +129,6 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
         return IconButton(
           onPressed: () {
             widget.controller.play();
-            displayUI = false;
-            if (mounted) setState(() {});
           },
           icon: const Icon(
             Icons.play_circle_filled,
