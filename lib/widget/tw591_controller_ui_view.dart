@@ -190,10 +190,15 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
           widget.controller.mute();
         }
       },
-      child: Icon(
-        widget.controller.isMute ? Icons.volume_off : Icons.volume_up,
-        size: 20,
-        color: Colors.white,
+      child: Container(
+        width: 30,
+        height: 30,
+        alignment: Alignment.bottomRight,
+        child: Icon(
+          widget.controller.isMute ? Icons.volume_off : Icons.volume_up,
+          size: 20,
+          color: Colors.white,
+        ),
       ),
     );
   }
