@@ -68,7 +68,8 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
   Widget playView() {
     String initUrl = '';
     if (selectType == 0) {
-      initUrl = 'https://www.youtube.com/watch?v=pmT_DvNzCQI';
+      // initUrl = 'https://www.youtube.com/watch?v=pmT_DvNzCQI';
+      initUrl = 'https://www.youtube.com/watch?v=EcSwRmC2Z84';
     } else if (selectType == 1) {
       initUrl = 'https://fb.watch/kD5Ij9HS2T/';
     } else {
@@ -93,7 +94,7 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
           if (controller != this.controller) return;
           this.controller = null;
         },
-        mute: true,
+        mute: false,
         loop: false,
         autoPlay: true,
         displayUi: true,

@@ -125,7 +125,8 @@ class _Tw591VideoPlayViewState extends State<Tw591VideoPlayView> {
         // 封面视图
         coverView(),
         // 控制视图
-        if (widget.displayUi) Tw591ControllerUiView(controller: controller),
+        if (widget.displayUi && !currentDisplayCover)
+          Tw591ControllerUiView(controller: controller),
       ],
     );
     return result;
