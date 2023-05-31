@@ -192,15 +192,15 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
       height: 20,
       child: SliderTheme(
         data: SliderTheme.of(context).copyWith(
-          trackHeight: 4,
+          trackHeight: 5,
           // 轨道高度
-          trackShape: const RectangularSliderTrackShape(),
+          trackShape: Tw591ControllerUiViewRectangularSliderTrackShape(),
           // 轨道形状，可以自定义
           activeTrackColor: Colors.blueGrey,
           // 激活的轨道颜色
           inactiveTrackColor: Colors.black26,
           // 未激活的轨道颜色
-          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 2),
+          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 5),
           thumbColor: Colors.white,
           // 滑块颜色
           overlayShape: const RoundSliderOverlayShape(overlayRadius: 2),
@@ -216,5 +216,28 @@ class _Tw591ControllerUiViewState extends State<Tw591ControllerUiView> {
         ),
       ),
     );
+  }
+}
+
+class Tw591ControllerUiViewRectangularSliderTrackShape
+    extends RectangularSliderTrackShape {
+  @override
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    Offset offset = Offset.zero,
+    required SliderThemeData sliderTheme,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
+    final value = super.getPreferredRect(
+      parentBox: parentBox,
+      offset: offset,
+      sliderTheme: sliderTheme,
+      isEnabled: isEnabled,
+      isDiscrete: isDiscrete,
+    );
+    // 消除进度条两端的间距
+    return Rect.fromLTWH(
+        0, value.top, value.width + value.left * 2, value.height);
   }
 }

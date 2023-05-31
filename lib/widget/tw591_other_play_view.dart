@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -31,6 +32,8 @@ class Tw591OtherPlayView extends StatefulWidget {
 class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
   FijkPlayer fPlayer = FijkPlayer();
 
+  StreamSubscription? _currentPosSubs;
+
   VideoPlayStatus? playStatus;
 
   @override
@@ -42,8 +45,10 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
 
   @override
   void dispose() {
-    // 移除监听
+    // 移除播放状态监听
     fPlayer.removeListener(handlePlayerListener);
+    // 移除播放进度监听
+    _currentPosSubs?.cancel();
     // 释放
     fPlayer.release();
     super.dispose();
@@ -117,15 +122,17 @@ class Ttw591OtherPlayViewState extends State<Tw591OtherPlayView> {
     fPlayer.setVolume(widget.mute ? 0 : 1);
     // 添加监听
     fPlayer.addListener(handlePlayerListener);
+    // 监听播放进度
+    _currentPosSubs = fPlayer.onCurrentPosUpdate.listen((value) {
+      // 播放时间
+      widget.playController?.updateTimeInterval(value.inSeconds.toDouble());
+    });
     // 记录播放器
     widget.playController?.setOtherPlayerController(fPlayer);
   }
 
+  /// 处理播放状态的监听
   handlePlayerListener() {
-    // 播放时间
-    widget.playController
-        ?.updateTimeInterval(fPlayer.currentPos.inSeconds.toDouble());
-
     VideoPlayStatus? currentStatus = playStatus;
     // 状态说明：https://fplayer.dev/basic/status.html
     switch (fPlayer.value.state) {
