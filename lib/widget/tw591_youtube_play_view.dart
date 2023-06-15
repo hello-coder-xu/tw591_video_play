@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tw591_base_features/features/webview/tw_webview.dart';
 import 'package:tw591_video_play/helper/tw591_video_play_helper.dart';
 import 'package:tw591_video_play/tw591_play_controller.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
@@ -33,6 +34,19 @@ class Tw591YoutubePlayView extends StatefulWidget {
 class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
   /// 获取播放网页
   Future<String> getPlayHtml() async {
+    return '''
+<html>
+        <head>
+            <link rel="stylesheet" href="sample.css">
+        </head>
+        <body>
+            <h1>Flutter Webview</h1>
+            <p>This paragraph have styles.</p>
+        </body>
+        <img src="flutter_logo.png" alt="">
+    </html>
+''';
+
     /// 网页中内容相关设置查看：https://developers.google.com/youtube/iframe_api_reference?hl=zh-cn#Playback_controls
     String playerHtml = await rootBundle.loadString(
       'packages/tw591_video_play/assets/youtube.html',
@@ -43,9 +57,8 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
         '{blurBackgroundImageUrl}', widget.blurBackgroundImageUrl);
     playerHtml = playerHtml.replaceAll('{isShowBlur}',
         widget.blurBackgroundImageUrl.isEmpty ? 'none' : 'static');
-    String videoHeight = widget.videoHeight == null
-        ? '100%'
-        : '${widget.videoHeight}px';
+    String videoHeight =
+        widget.videoHeight == null ? '100%' : '${widget.videoHeight}px';
     playerHtml = playerHtml.replaceAll('{videoHeight}', videoHeight);
     playerHtml = playerHtml.replaceAll('{initAutoplay}', '${widget.autoPlay}');
     playerHtml = playerHtml.replaceAll('{initMute}', '${widget.mute ? 1 : 0}');
@@ -57,23 +70,25 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: true,
-      child: WebView(
-        javascriptMode: JavascriptMode.unrestricted,
+      child: TWWebView(
+        javascriptMode: JavaScriptMode.unrestricted,
         allowsInlineMediaPlayback: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
         userAgent: Tw591VideoPlayHelper.userAgent,
         zoomEnabled: false,
         gestureNavigationEnabled: true,
         onWebViewCreated: (controller) async {
-          widget.playController.setWebViewController(controller);
+          final webViewController = controller.webViewController;
+          widget.playController.setWebViewController(webViewController);
           String currentHtml = await getPlayHtml();
-          controller.loadHtmlString(currentHtml);
+          webViewController.loadHtmlString(currentHtml);
+        
         },
         javascriptChannels: {
-          JavascriptChannel(
+          JavaScriptChannelParams(
             name: "Tw591StateChange",
-            onMessageReceived: (JavascriptMessage message) {
+            onMessageReceived: (JavaScriptMessage message) {
               String status = message.message;
               // -1 未开始
               // 0 已结束
@@ -81,27 +96,28 @@ class _Tw591YoutubePlayViewState extends State<Tw591YoutubePlayView> {
               // 2 已暂停
               // 3 正在缓冲
               // 5 已插入视频
-              if (status == '1') {
+              final intStatus = double.tryParse(status);
+              if (intStatus == 1) {
                 // 开始播放
                 widget.playController.updatePlayStatus(VideoPlayStatus.play);
-              } else if (status == '2') {
+              } else if (intStatus == 2) {
                 // 暂停
                 widget.playController.updatePlayStatus(VideoPlayStatus.pause);
-              } else if (status == '0') {
+              } else if (intStatus == 0) {
                 // 结束
                 widget.playController.updatePlayStatus(VideoPlayStatus.finish);
               }
             },
           ),
-          JavascriptChannel(
+          JavaScriptChannelParams(
             name: "Tw591VideoInfo",
-            onMessageReceived: (JavascriptMessage message) {
+            onMessageReceived: (JavaScriptMessage message) {
               debugPrint('test 测试 视频信息=${message.message}');
             },
           ),
-          JavascriptChannel(
+          JavaScriptChannelParams(
             name: "Tw591TimeInterval",
-            onMessageReceived: (JavascriptMessage message) {
+            onMessageReceived: (JavaScriptMessage message) {
               // 当前时间
               String result = message.message;
               double currentTime = double.tryParse(result) ?? 0.0;

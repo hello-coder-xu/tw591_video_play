@@ -99,24 +99,24 @@ class _PlayDemoPageState extends State<PlayDemoPage> {
         autoPlay: true,
         displayUi: true,
 
-        coverView: (videoPlayStatus) {
-          // if (videoPlayStatus == null) {
-          //
-          // } else {
-          //   return const SizedBox.shrink();
-          // }
-          return Container(
-            alignment: Alignment.center,
-            color: Colors.green.withOpacity(0.5),
-            child: const Text(
-              '我是封面图',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-              ),
-            ),
-          );
-        },
+        // coverView: (videoPlayStatus) {
+        //   // if (videoPlayStatus == null) {
+        //   //
+        //   // } else {
+        //   //   return const SizedBox.shrink();
+        //   // }
+        //   return Container(
+        //     alignment: Alignment.center,
+        //     color: Colors.green.withOpacity(0.5),
+        //     child: const Text(
+        //       '我是封面图',
+        //       style: TextStyle(
+        //         fontSize: 24,
+        //         color: Colors.white,
+        //       ),
+        //     ),
+        //   );
+        // },
       ),
     );
   }

@@ -66,7 +66,7 @@ class Tw591PlayController extends ChangeNotifier {
   ///  播放
   void play() {
     if (_playByWebView) {
-      _controller?.runJavascript('play()');
+      _controller?.runJavaScript('play()');
     } else {
       _otherPlayerController?.start();
     }
@@ -76,7 +76,7 @@ class Tw591PlayController extends ChangeNotifier {
   ///  暂停
   void pause() {
     if (_playByWebView) {
-      _controller?.runJavascript('pause()');
+      _controller?.runJavaScript('pause()');
     } else {
       _otherPlayerController?.pause();
     }
@@ -100,7 +100,7 @@ class Tw591PlayController extends ChangeNotifier {
   void mute() {
     isMute = true;
     if (_playByWebView) {
-      _controller?.runJavascript('mute()');
+      _controller?.runJavaScript('mute()');
     } else {
       _otherPlayerController?.setVolume(0);
     }
@@ -110,7 +110,7 @@ class Tw591PlayController extends ChangeNotifier {
   void unMute() {
     isMute = false;
     if (_playByWebView) {
-      _controller?.runJavascript('unMute()');
+      _controller?.runJavaScript('unMute()');
     } else {
       _otherPlayerController?.setVolume(1);
     }
@@ -120,9 +120,9 @@ class Tw591PlayController extends ChangeNotifier {
   void setVolume(double volume) {
     double vol = volume.clamp(0, 100).toDouble();
     if (videoType == VideoPlayType.youtube) {
-      _controller?.runJavascript('setVolume(${vol ~/ 1})');
+      _controller?.runJavaScript('setVolume(${vol ~/ 1})');
     } else if (videoType == VideoPlayType.facebook) {
-      _controller?.runJavascript('setVolume(${vol / 100})');
+      _controller?.runJavaScript('setVolume(${vol / 100})');
     } else {
       _otherPlayerController?.setVolume(vol / 100);
     }
@@ -132,10 +132,10 @@ class Tw591PlayController extends ChangeNotifier {
     if (videoType == null) return;
     switch (videoType!) {
       case VideoPlayType.youtube:
-        _controller?.runJavascript('seekTo($seconds, "true")');
+        _controller?.runJavaScript('seekTo($seconds, "true")');
         break;
       case VideoPlayType.facebook:
-        _controller?.runJavascript('seekTo($seconds)');
+        _controller?.runJavaScript('seekTo($seconds)');
         break;
       case VideoPlayType.other:
         _otherPlayerController?.seekTo(seconds.toInt());
@@ -146,16 +146,17 @@ class Tw591PlayController extends ChangeNotifier {
   /// 设置毛玻璃背景
   void blurBgImageUrl(String url) {
     if (_playByWebView) {
-      _controller?.runJavascript('blurBgImageUrl($url)');
+      _controller?.runJavaScript('blurBgImageUrl($url)');
     }
   }
 
   /// 获取当前播放时间
   Future<double> getCurrentTime() async {
     if (_playByWebView) {
-      String result =
-          await _controller?.runJavascriptReturningResult('getCurrentTime()') ??
-              '0';
+      final resultObj =
+          await _controller?.runJavaScriptReturningResult('getCurrentTime()');
+      String result = '$resultObj';
+
       return double.tryParse(result) ?? 0.0;
     }
     return (_otherPlayerController?.currentPos.inSeconds ?? 0).toDouble();
@@ -164,9 +165,9 @@ class Tw591PlayController extends ChangeNotifier {
   /// 获取视频总时长
   Future<double> getTotalTime() async {
     if (_playByWebView) {
-      String result =
-          await _controller?.runJavascriptReturningResult('getTotalTime()') ??
-              '0';
+      final resultObj =
+          await _controller?.runJavaScriptReturningResult('getTotalTime()');
+      String result = '$resultObj';
       return double.tryParse(result) ?? 0.0;
     }
     return (_otherPlayerController?.value.duration.inSeconds ?? 0).toDouble();

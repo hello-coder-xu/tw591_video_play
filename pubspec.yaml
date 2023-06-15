@@ -18,10 +18,39 @@ dependencies:
   cached_network_image: any
   #  flutter_inappwebview: ^5.7.2+3
   # webview
+  # webview_flutter:
+  #   git:
+  #     url: https://github.com/windows7lake/plugins.git
+  #     path: packages/webview_flutter/webview_flutter
   webview_flutter:
-    git:
-      url: https://github.com/windows7lake/plugins.git
-      path: packages/webview_flutter/webview_flutter
+    version: ^4.2.0+2
+    hosted:
+      name: webview_flutter
+      url: http://192.168.8.75:4000/
+  webview_flutter_android:
+    version: ^3.7.0+2
+    hosted:
+      name: webview_flutter_android
+      url: http://192.168.8.75:4000/
+  webview_flutter_platform_interface:
+    version: ^2.3.0+2
+    hosted:
+      name: webview_flutter_platform_interface
+      url: http://192.168.8.75:4000/
+  webview_flutter_wkwebview:
+    version: ^3.4.3+2
+    hosted:
+      name: webview_flutter_wkwebview
+      url: http://192.168.8.75:4000/
+
+  tw591_base_features:
+    path: ../tw591_base_features
+
+
+dependency_overrides:
+  url_launcher: 6.1.11
+  package_info_plus: ^4.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

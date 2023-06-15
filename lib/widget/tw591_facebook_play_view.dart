@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tw591_base_features/features/webview/tw_webview.dart';
 import 'package:tw591_video_play/header/tw591_video_play_head.dart';
 import 'package:tw591_video_play/helper/tw591_video_play_helper.dart';
 import 'package:tw591_video_play/tw591_play_controller.dart';
@@ -50,8 +51,8 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: true,
-      child: WebView(
-        javascriptMode: JavascriptMode.unrestricted,
+      child: TWWebView(
+        javascriptMode: JavaScriptMode.unrestricted,
         allowsInlineMediaPlayback: true,
         backgroundColor: Colors.black,
         initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
@@ -59,14 +60,15 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
         zoomEnabled: false,
         gestureNavigationEnabled: true,
         onWebViewCreated: (controller) async {
-          widget.playController.setWebViewController(controller);
+          final webViewController = controller.webViewController;
+          widget.playController.setWebViewController(webViewController);
           String currentHtml = await getPlayHtml();
-          controller.loadHtmlString(currentHtml);
+          webViewController.loadHtmlString(currentHtml);
         },
         javascriptChannels: {
-          JavascriptChannel(
+          JavaScriptChannelParams(
             name: "Tw591StateChange",
-            onMessageReceived: (JavascriptMessage message) {
+            onMessageReceived: (JavaScriptMessage message) {
               String status = message.message;
               if (status == 'startedPlaying') {
                 // 开始播放
@@ -80,9 +82,9 @@ class _Tw591FacebookPlayViewState extends State<Tw591FacebookPlayView> {
               }
             },
           ),
-          JavascriptChannel(
+          JavaScriptChannelParams(
             name: "Tw591TimeInterval",
-            onMessageReceived: (JavascriptMessage message) {
+            onMessageReceived: (JavaScriptMessage message) {
               // 当前时间
               String result = message.message;
               double currentTime = double.tryParse(result) ?? 0.0;

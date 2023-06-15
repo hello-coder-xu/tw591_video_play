@@ -1,53 +1,349 @@
 PODS:
+  - "app_settings (3.0.0+1)":
+    - Flutter
   - BIJKPlayer (0.7.16)
+  - ClassWrittenInSwift (0.0.6)
+  - dart_native (0.0.1):
+    - ClassWrittenInSwift (~> 0.0.5)
+    - Flutter
+  - device_info (0.0.1):
+    - Flutter
+  - DKImagePickerController/Core (4.3.4):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.3.4)
+  - DKImagePickerController/PhotoGallery (4.3.4):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.3.4)
+  - DKPhotoGallery (0.0.17):
+    - DKPhotoGallery/Core (= 0.0.17)
+    - DKPhotoGallery/Model (= 0.0.17)
+    - DKPhotoGallery/Preview (= 0.0.17)
+    - DKPhotoGallery/Resource (= 0.0.17)
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - FBAEMKit (15.1.0):
+    - FBSDKCoreKit_Basics (= 15.1.0)
+  - FBSDKCoreKit (15.1.0):
+    - FBAEMKit (= 15.1.0)
+    - FBSDKCoreKit_Basics (= 15.1.0)
+  - FBSDKCoreKit_Basics (15.1.0)
+  - FBSDKLoginKit (15.1.0):
+    - FBSDKCoreKit (= 15.1.0)
   - fijkplayer (0.10.1):
     - BIJKPlayer (~> 0.7.16)
     - Flutter
+  - file_picker (0.0.1):
+    - DKImagePickerController/PhotoGallery
+    - Flutter
   - Flutter (1.0.0)
+  - flutter_facebook_auth (5.0.4):
+    - FBSDKLoginKit (~> 15.1.0)
+    - Flutter
+  - flutter_keyboard_visibility (0.0.1):
+    - Flutter
+  - flutter_line_sdk (2.3.1):
+    - Flutter
+    - LineSDKSwift (~> 5.3)
+  - flutter_secure_storage (6.0.0):
+    - Flutter
+  - flutter_udid (0.0.1):
+    - Flutter
+    - SAMKeychain
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - geolocator_apple (1.2.0):
+    - Flutter
+  - google_analytics_legacy (1.0.3):
+    - Flutter
+    - GoogleAnalytics (= 3.20.0)
+    - GoogleIDFASupport (= 3.14.0)
+  - google_maps_flutter (0.0.1):
+    - Flutter
+    - GoogleMaps
+  - GoogleAnalytics (3.20.0)
+  - GoogleIDFASupport (3.14.0)
+  - GoogleMaps (6.2.1):
+    - GoogleMaps/Maps (= 6.2.1)
+  - GoogleMaps/Base (6.2.1)
+  - GoogleMaps/Maps (6.2.1):
+    - GoogleMaps/Base
+  - image_gallery_saver (1.5.0):
+    - Flutter
+  - image_picker_ios (0.0.1):
+    - Flutter
+  - LineSDKSwift (5.9.1):
+    - LineSDKSwift/Core (= 5.9.1)
+  - LineSDKSwift/Core (5.9.1)
+  - map_launcher (0.0.1):
+    - Flutter
+  - MTBBarcodeScanner (5.0.11)
+  - package_info_plus (0.4.5):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - permission_handler_apple (9.1.0):
+    - Flutter
+  - photo_manager (2.0.0):
+    - Flutter
+    - FlutterMacOS
+  - PINCache (3.0.3):
+    - PINCache/Arc-exception-safe (= 3.0.3)
+    - PINCache/Core (= 3.0.3)
+  - PINCache/Arc-exception-safe (3.0.3):
+    - PINCache/Core
+  - PINCache/Core (3.0.3):
+    - PINOperation (~> 1.2.1)
+  - PINOperation (1.2.2)
+  - qr_code_scanner (0.2.0):
+    - Flutter
+    - MTBBarcodeScanner
+  - SAMKeychain (1.5.3)
+  - SDWebImage (5.16.0):
+    - SDWebImage/Core (= 5.16.0)
+  - SDWebImage/Core (5.16.0)
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - sign_in_with_apple (0.0.1):
+    - Flutter
   - sqflite (0.0.3):
     - Flutter
     - FMDB (>= 2.7.5)
+  - SwiftyGif (5.4.4)
+  - system_proxy (0.0.1):
+    - Flutter
+  - tw591_base_features (0.0.1):
+    - Flutter
+  - tw591_cache (0.0.1):
+    - Flutter
+    - PINCache (~> 3.0.3)
+  - tw591_flutter_pack (0.0.1):
+    - Flutter
+  - tw591_network (0.0.1):
+    - Flutter
+  - tw591_qrscanner (0.0.1):
+    - Flutter
+  - tw591_qrscanner_implementation_qr_code_scanner (0.0.1):
+    - Flutter
+  - tw591_router (0.0.1):
+    - Flutter
+  - uri_to_file (0.0.1):
+    - Flutter
+  - url_launcher_ios (0.0.1):
+    - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
 DEPENDENCIES:
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
+  - dart_native (from `.symlinks/plugins/dart_native/ios`)
+  - device_info (from `.symlinks/plugins/device_info/ios`)
   - fijkplayer (from `.symlinks/plugins/fijkplayer/ios`)
+  - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
+  - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
+  - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - flutter_line_sdk (from `.symlinks/plugins/flutter_line_sdk/ios`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - flutter_udid (from `.symlinks/plugins/flutter_udid/ios`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - google_analytics_legacy (from `.symlinks/plugins/google_analytics_legacy/ios`)
+  - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
+  - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - map_launcher (from `.symlinks/plugins/map_launcher/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
+  - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
+  - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - system_proxy (from `.symlinks/plugins/system_proxy/ios`)
+  - tw591_base_features (from `.symlinks/plugins/tw591_base_features/ios`)
+  - tw591_cache (from `.symlinks/plugins/tw591_cache/ios`)
+  - tw591_flutter_pack (from `.symlinks/plugins/tw591_flutter_pack/ios`)
+  - tw591_network (from `.symlinks/plugins/tw591_network/ios`)
+  - tw591_qrscanner (from `.symlinks/plugins/tw591_qrscanner/ios`)
+  - tw591_qrscanner_implementation_qr_code_scanner (from `.symlinks/plugins/tw591_qrscanner_implementation_qr_code_scanner/ios`)
+  - tw591_router (from `.symlinks/plugins/tw591_router/ios`)
+  - uri_to_file (from `.symlinks/plugins/uri_to_file/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
   trunk:
     - BIJKPlayer
+    - ClassWrittenInSwift
+    - DKImagePickerController
+    - DKPhotoGallery
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKLoginKit
     - FMDB
+    - GoogleAnalytics
+    - GoogleIDFASupport
+    - GoogleMaps
+    - LineSDKSwift
+    - MTBBarcodeScanner
+    - PINCache
+    - PINOperation
+    - SAMKeychain
+    - SDWebImage
+    - SwiftyGif
 
 EXTERNAL SOURCES:
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
+  dart_native:
+    :path: ".symlinks/plugins/dart_native/ios"
+  device_info:
+    :path: ".symlinks/plugins/device_info/ios"
   fijkplayer:
     :path: ".symlinks/plugins/fijkplayer/ios"
+  file_picker:
+    :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
     :path: Flutter
+  flutter_facebook_auth:
+    :path: ".symlinks/plugins/flutter_facebook_auth/ios"
+  flutter_keyboard_visibility:
+    :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  flutter_line_sdk:
+    :path: ".symlinks/plugins/flutter_line_sdk/ios"
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  flutter_udid:
+    :path: ".symlinks/plugins/flutter_udid/ios"
+  geolocator_apple:
+    :path: ".symlinks/plugins/geolocator_apple/ios"
+  google_analytics_legacy:
+    :path: ".symlinks/plugins/google_analytics_legacy/ios"
+  google_maps_flutter:
+    :path: ".symlinks/plugins/google_maps_flutter/ios"
+  image_gallery_saver:
+    :path: ".symlinks/plugins/image_gallery_saver/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  map_launcher:
+    :path: ".symlinks/plugins/map_launcher/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  photo_manager:
+    :path: ".symlinks/plugins/photo_manager/ios"
+  qr_code_scanner:
+    :path: ".symlinks/plugins/qr_code_scanner/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
+  sign_in_with_apple:
+    :path: ".symlinks/plugins/sign_in_with_apple/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
+  system_proxy:
+    :path: ".symlinks/plugins/system_proxy/ios"
+  tw591_base_features:
+    :path: ".symlinks/plugins/tw591_base_features/ios"
+  tw591_cache:
+    :path: ".symlinks/plugins/tw591_cache/ios"
+  tw591_flutter_pack:
+    :path: ".symlinks/plugins/tw591_flutter_pack/ios"
+  tw591_network:
+    :path: ".symlinks/plugins/tw591_network/ios"
+  tw591_qrscanner:
+    :path: ".symlinks/plugins/tw591_qrscanner/ios"
+  tw591_qrscanner_implementation_qr_code_scanner:
+    :path: ".symlinks/plugins/tw591_qrscanner_implementation_qr_code_scanner/ios"
+  tw591_router:
+    :path: ".symlinks/plugins/tw591_router/ios"
+  uri_to_file:
+    :path: ".symlinks/plugins/uri_to_file/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   BIJKPlayer: 4c5d66e5cb99ae5bade6f22a4fcc031722a81c64
+  ClassWrittenInSwift: 9d2d06414cd31a3aa4d5b04c021294dee2362cac
+  dart_native: a9824de4c77f34e6a27da6d8eb21784efd5512c7
+  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
+  DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
+  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
+  FBAEMKit: c7f82b5145d446bcbbcd50485c032689032fc6a2
+  FBSDKCoreKit: 7542746fc63a2a38dd6a865eeb54268341f37b83
+  FBSDKCoreKit_Basics: 92d6b26c0bed30ab09bbdd96dccaa26e6c9978d1
+  FBSDKLoginKit: 4e275d30cf90e92bdf3a7c82857a8642abf23037
   fijkplayer: 5ecf78e80cb97eed64cc170b094a4f691d9b9691
+  file_picker: ce3938a0df3cc1ef404671531facef740d03f920
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_facebook_auth: c69f4e643b1d9cc9063ec87c9411bd9ec268108f
+  flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
+  flutter_line_sdk: a86e7072a47b7fe0e251c11354c5b7dd04d9947b
+  flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
+  flutter_udid: 0848809dbed4c055175747ae6a45a8b4f6771e1c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
+  google_analytics_legacy: 576feb4d3a95cb83e9395e9794f7f9e793149067
+  google_maps_flutter: c59fc576c0d0c7f4dc4bd63832c862d22d5a7c6d
+  GoogleAnalytics: 01e4c5a04544a3608f93e970ce0817836897c5a5
+  GoogleIDFASupport: aaf8c10bd429abb1c15349d5252244f5eda8ead1
+  GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
+  image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  LineSDKSwift: 0f676fbc3e66129e2dfff706cc319126d8087353
+  map_launcher: e325db1261d029ff33e08e03baccffe09593ffea
+  MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
+  package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
+  permission_handler_apple: 8f116445eff3c0e7c65ad60f5fef5490aa94b4e4
+  photo_manager: 4f6810b7dfc4feb03b461ac1a70dacf91fba7604
+  PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
+  PINOperation: daa34d4aa1d8449089be7d405b9d974abc4724c6
+  qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
+  SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
+  SDWebImage: 2aea163b50bfcb569a2726b6a754c54a4506fcf6
+  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
+  sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
-  webview_flutter_wkwebview: 005fbd90c888a42c5690919a1527ecc6649e1162
+  SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
+  system_proxy: bec1a5c5af67dd3e3ebf43979400a8756c04cc44
+  tw591_base_features: 80fc0690c0e4729c7647a76686bfe95ec332818e
+  tw591_cache: 5ddb40432ce416ad157883143bc0f7299980aa6d
+  tw591_flutter_pack: 75047ca0fc0aa0e9c6b8da01d209de6c15ac2ac0
+  tw591_network: cc7514459d1e36a16ab8233fed15fe82e2c12219
+  tw591_qrscanner: c8af18f0805198715f826b38eac08f40c3e3ba4d
+  tw591_qrscanner_implementation_qr_code_scanner: 32e48caf868e2374178ba4ac28b878a3d7a422e6
+  tw591_router: b33c3783723e346f776c5bf50e4ed2356a6fb405
+  uri_to_file: c4726881848febf4806f0a5707bd12903e02b0f0
+  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
+  webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 
